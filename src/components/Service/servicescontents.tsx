@@ -25,7 +25,7 @@ export default function ContentsServices({ subCategories = [] }: Props) {
             size="md"
             key={sub}
             variant="ghost"
-            className="w-[200px] h-[75px] bg-[#ebeef5] text-dark hover:bg-primary/20 hover:text-dark"
+            className="w-[200px] h-[75px]  bg-[#C3C3C3] text-dark hover:bg-primary/20 hover:text-dark"
           >
             {sub}
           </Button>
