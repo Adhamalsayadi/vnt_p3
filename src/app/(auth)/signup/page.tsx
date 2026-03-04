@@ -22,7 +22,10 @@ export default function SignupPage() {
         <Link href="/" className="logo">
           <Image src="/VT.png" alt="V&T Logo" width={50} height={35} />
         </Link>
-        <Link href="/login" className="bg-primary py-2.5 px-[30px] rounded-lg font-semibold text-[15px] transition-all hover:-translate-y-0.5">
+        <Link
+          href="/login"
+          className="bg-primary py-2.5 px-[30px] rounded-lg font-semibold text-[15px] transition-all hover:-translate-y-0.5"
+        >
           Log in
         </Link>
       </header>
@@ -40,12 +43,16 @@ export default function SignupPage() {
                     isActive ? "text-white" : "text-[#aaaaaa]"
                   }`}
                 >
-                  <div className={`w-5 h-5 rounded-full border flex items-center justify-center bg-[#2d2d2d] transition-colors ${
-                    isActive ? "border-white" : "border-[#555]"
-                  }`}>
-                    <div className={`w-1.5 h-1.5 rounded-full transition-colors ${
-                      isActive ? "bg-white" : "bg-transparent"
-                    }`}></div>
+                  <div
+                    className={`w-5 h-5 rounded-full border flex items-center justify-center bg-[#2d2d2d] transition-colors ${
+                      isActive ? "border-white" : "border-[#555]"
+                    }`}
+                  >
+                    <div
+                      className={`w-1.5 h-1.5 rounded-full transition-colors ${
+                        isActive ? "bg-white" : "bg-transparent"
+                      }`}
+                    ></div>
                   </div>
                   <span>{s}</span>
                 </div>
@@ -57,7 +64,9 @@ export default function SignupPage() {
         <div className="bg-white p-[40px_50px] rounded-xl shadow-[0_10px_40px_rgba(0,0,0,0.1)] absolute left-[200px] top-[50px] w-[850px] z-[5] min-h-[600px]">
           {step === 1 && (
             <div className="step-content">
-              <p className="text-primary font-semibold mb-[15px] text-sm uppercase">Seclect user</p>
+              <p className="text-primary font-semibold mb-[15px] text-sm uppercase">
+                Seclect user
+              </p>
               <h2 className="text-xl font-semibold mb-6.25 text-[#333]">
                 1.According to the services you want, select who you are?
                 <span className="text-[#ff4d4f]">*</span>
@@ -87,39 +96,57 @@ export default function SignupPage() {
               <div className="grid grid-cols-2 gap-5 mb-[25px]">
                 <div className="flex flex-col">
                   <label className="block text-lg font-semibold mb-3.75 text-[#333]">
-                    2.Enter a valid Email<span className="text-[#ff4d4f]">*</span>
+                    2.Enter a valid Email
+                    <span className="text-[#ff4d4f]">*</span>
                   </label>
-                  <input type="email" className="w-full p-[15px_20px] bg-[#ebeef5] border-none rounded-lg text-base outline-none" />
+                  <input
+                    type="email"
+                    className="w-full p-[15px_20px] bg-[#ebeef5] border-none rounded-lg text-base outline-none"
+                  />
                 </div>
                 <div className="flex flex-col">
                   <label className="block text-lg font-semibold mb-3.75 text-[#333]">
-                    3.what is the password?<span className="text-[#ff4d4f]">*</span>
+                    3.what is the password?
+                    <span className="text-[#ff4d4f]">*</span>
                   </label>
-                  <input type="password" className="w-full p-[15px_20px] bg-[#ebeef5] border-none rounded-lg text-base outline-none" />
+                  <input
+                    type="password"
+                    className="w-full p-[15px_20px] bg-[#ebeef5] border-none rounded-lg text-base outline-none"
+                  />
                 </div>
               </div>
 
               <div className="mb-[25px]">
                 <label className="block text-lg font-semibold mb-3.75 text-[#333]">
-                  4.what is the company's owner name?<span className="text-[#ff4d4f]">*</span>
+                  4.what is the company's owner name?
+                  <span className="text-[#ff4d4f]">*</span>
                 </label>
-                <input type="text" className="w-full p-[15px_20px] bg-[#ebeef5] border-none rounded-lg text-base outline-none" />
+                <input
+                  type="text"
+                  className="w-full p-[15px_20px] bg-[#ebeef5] border-none rounded-lg text-base outline-none"
+                />
               </div>
 
               <div className="mb-[25px]">
                 <label className="block text-lg font-semibold mb-3.75 text-[#333]">
-                  5. Upload a profile photo?<span className="text-[#ff4d4f]">*</span>
+                  5. Upload a profile photo?
+                  <span className="text-[#ff4d4f]">*</span>
                 </label>
                 <div className="border border-dashed border-[#d9d9d9] rounded-lg p-[30px] text-center bg-[#ebeef5] relative">
                   <div className="text-[32px] mb-[15px]">📁</div>
                   <p className="text-sm text-[#333] font-semibold">
-                    Drag & drop files or <span className="text-[#d4af37] underline cursor-pointer">upload file</span>
+                    Drag & drop files or{" "}
+                    <span className="text-[#d4af37] underline cursor-pointer">
+                      upload file
+                    </span>
                   </p>
                   <p className="text-[11px] text-[#999] mt-2.5 font-normal">
                     Supported formats: JPEG, PNG, GIF, MP4, PDF, PSD, AI, Word,
                     PPT
                   </p>
-                  <button className="absolute right-5 bottom-5 bg-primary py-2 px-[30px] rounded-lg font-semibold text-sm transition-all hover:-translate-y-0.5">Upload</button>
+                  <button className="absolute right-5 bottom-5 bg-primary py-2 px-[30px] rounded-lg font-semibold text-sm transition-all hover:-translate-y-0.5">
+                    Upload
+                  </button>
                 </div>
               </div>
 
@@ -136,7 +163,9 @@ export default function SignupPage() {
 
           {step > 1 && (
             <div className="flex flex-col items-center justify-center min-h-[400px]">
-              <h2 className="text-2xl font-bold mb-5">Step {step} placeholder</h2>
+              <h2 className="text-2xl font-bold mb-5">
+                Step {step} placeholder
+              </h2>
               <button
                 className="py-3 px-10 bg-primary rounded-lg font-semibold border-none text-base transition-all hover:-translate-y-0.5"
                 onClick={() => setStep(step - 1)}

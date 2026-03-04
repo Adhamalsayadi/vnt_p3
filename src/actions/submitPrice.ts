@@ -9,7 +9,4 @@ export async function submitPriceAction(enquiryId: string) {
   if (!token) {
     redirect("/login");
   }
-
-  // If logged in → redirect to enquiry details
-  redirect(`/enquiries/${enquiryId}`);
 }
