@@ -1,0 +1,18 @@
+{
+  "services": [
+    { "label": "Transportation", "image": "/Services.png" },
+    { "label": "Rental", "image": "/for-rent.png" },
+    { "label": "Products", "image": "/received.png" },
+    { "label": "Man power", "image": "/power.png" }
+  ],
+  "serviceButtons": [
+    "Transportation",
+    "Rental",
+    "Products",
+    "Man power",
+    "Cleaning",
+    "Logistics",
+    "Security",
+    "Delivery"
+  ]
+}
