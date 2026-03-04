@@ -57,7 +57,7 @@ export default function Navbar() {
             <Button className="w-20 capitalize">Post</Button>
           </Link>
           <Link href={"/login"}>
-            <Button variant="ghost" className="w-20 capitalize">
+            <Button variant="ghost" className="w-22   capitalize">
               log in
             </Button>
           </Link>
