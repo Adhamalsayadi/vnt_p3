@@ -1,7 +1,16 @@
 import AboutHero from "@/components/about/components/about-hero";
 import AboutCard from "@/components/about/components/card";
+import type { Metadata } from "next";
+import { buildPageMetadata } from "@/lib/seo";
+
+export const metadata: Metadata = buildPageMetadata({
+  title: "About Us | V&T Platform",
+  description:
+    "Learn about V&T Platform mission, strategy, and vision for supporting procurement workflows.",
+  path: "/about",
+});
+
 export default async function AboutPage() {
-  await new Promise((r) => setTimeout(r, 1000));
   return (
     <>
       <AboutHero />

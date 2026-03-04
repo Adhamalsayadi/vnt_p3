@@ -118,7 +118,7 @@ export default function SignupPage() {
 
               <div className="mb-[25px]">
                 <label className="block text-lg font-semibold mb-3.75 text-[#333]">
-                  4.what is the company's owner name?
+                  4.what is the company&apos;s owner name?
                   <span className="text-[#ff4d4f]">*</span>
                 </label>
                 <input

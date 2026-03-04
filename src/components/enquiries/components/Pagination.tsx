@@ -30,6 +30,9 @@ export default function Pagination({ totalPages, currentPage }: PaginationProps)
         return (
           <button
             key={page}
+            type="button"
+            aria-label={`Go to page ${page}`}
+            aria-current={isActive ? "page" : undefined}
             className={`${pageBtnClasses} ${isActive ? activeBtnClasses : ""}`}
             onClick={() => handlePageClick(page)}
           >
@@ -37,7 +40,10 @@ export default function Pagination({ totalPages, currentPage }: PaginationProps)
           </button>
         );
       })}
-      <button className="fixed bottom-[100px] right-10 bg-primary border-none p-[20px_30px] rounded-2xl font-bold text-lg shadow-[0_10px_30px_rgba(255,214,10,0.4)] cursor-pointer z-[100] transition-all hover:-translate-y-1 hover:shadow-[0_15px_35px_rgba(255,214,10,0.5)]">
+      <button
+        type="button"
+        className="fixed bottom-[100px] right-10 bg-primary border-none p-[20px_30px] rounded-2xl font-bold text-lg shadow-[0_10px_30px_rgba(255,214,10,0.4)] cursor-pointer z-[100] transition-all hover:-translate-y-1 hover:shadow-[0_15px_35px_rgba(255,214,10,0.5)]"
+      >
         Post an enquiry
       </button>
     </div>

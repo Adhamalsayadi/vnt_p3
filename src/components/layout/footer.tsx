@@ -9,19 +9,7 @@ import {
   Mail,
   Phone,
 } from "lucide-react";
-
-const usefulLinks = [
-  { label: "About", href: "/about" },
-  { label: "Contact us", href: "/contact" },
-  { label: "Ads", href: "/advertisments" },
-  { label: "Why us", href: "/about" },
-];
-
-const supportLinks = [
-  { label: "Getting started", href: "/contact" },
-  { label: "Help center", href: "/contact" },
-  { label: "Report a bug", href: "/contact" },
-];
+import { FOOTER_SUPPORT_LINKS, FOOTER_USEFUL_LINKS } from "@/config/public";
 
 export default function Footer() {
   return (
@@ -39,26 +27,26 @@ export default function Footer() {
             A company to publish services across multiple industries.
           </p>
           <div className="flex gap-[15px] text-[20px] text-dark">
-            <SocialIcon href="#">
+            <SocialIcon href="#" label="Facebook">
               <Facebook size={18} />
             </SocialIcon>
-            <SocialIcon href="#">
+            <SocialIcon href="#" label="Twitter">
               <Twitter size={18} />
             </SocialIcon>
-            <SocialIcon href="#">
+            <SocialIcon href="#" label="Instagram">
               <Instagram size={18} />
             </SocialIcon>
-            <SocialIcon href="#">
+            <SocialIcon href="#" label="LinkedIn">
               <Linkedin size={18} />
             </SocialIcon>
-            <SocialIcon href="#">
+            <SocialIcon href="#" label="YouTube">
               <Youtube size={18} />
             </SocialIcon>
           </div>
         </div>
 
-        <FooterColumn title="Useful Links" links={usefulLinks} />
-        <FooterColumn title="Support" links={supportLinks} />
+        <FooterColumn title="Useful Links" links={FOOTER_USEFUL_LINKS} />
+        <FooterColumn title="Support" links={FOOTER_SUPPORT_LINKS} />
 
         <div className="footer-links">
           <h3 className="mb-5 text-[18px] font-semibold">Contacts us</h3>
@@ -117,13 +105,16 @@ function FooterColumn({
 function SocialIcon({
   children,
   href,
+  label,
 }: {
   children: React.ReactNode;
   href: string;
+  label: string;
 }) {
   return (
     <Link
       href={href}
+      aria-label={label}
       className="text-dark hover:text-primary transition-colors"
     >
       {children}

@@ -5,12 +5,21 @@ import ContentsServices from "@/components/Service/servicescontents";
 import Mainlayout from "@/components/enquiries/components/mainlayout";
 import enquiriesData from "@/data/enquiries.json";
 import { EnquiryFilters } from "@/types/enquiries";
+import EmptyState from "@/components/ui/empty-state";
+import type { Metadata } from "next";
+import { buildPageMetadata } from "@/lib/seo";
+
+export const metadata: Metadata = buildPageMetadata({
+  title: "Advertisments | V&T Platform",
+  description:
+    "Discover published advertisments and opportunities across services, rentals, manpower, and products.",
+  path: "/advertisments",
+});
 interface Props {
   searchParams: Promise<EnquiryFilters>;
 }
 
 export default async function AdvertismentsPage({ searchParams }: Props) {
-  await new Promise((r) => setTimeout(r, 1000));
   const params = await searchParams;
 
   const {
@@ -35,6 +44,22 @@ export default async function AdvertismentsPage({ searchParams }: Props) {
       (vtRate === "" || item.vtRate >= Number(vtRate))
     );
   });
+
+  if (filtered.length === 0) {
+    return (
+      <div>
+        <EnquiriesHero />
+        <SearchBar />
+        <Services />
+        <EmptyState
+          title="No advertisments found"
+          description="No results match your current filters. Clear filters and try again."
+          actionHref="/advertisments"
+          actionLabel="Clear Filters"
+        />
+      </div>
+    );
+  }
 
   return (
     <div>

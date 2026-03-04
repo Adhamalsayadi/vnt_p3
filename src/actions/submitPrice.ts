@@ -3,7 +3,8 @@
 import { redirect } from "next/navigation";
 import { cookies } from "next/headers";
 
-export async function submitPriceAction(enquiryId: string) {
+export async function submitPriceAction(_enquiryId: string) {
+  void _enquiryId;
   const cookieStore = await cookies();
   const token = cookieStore.get("token");
   if (!token) {

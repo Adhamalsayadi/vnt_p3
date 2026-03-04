@@ -6,7 +6,7 @@ export default function NotFound() {
       <h1 className="text-8xl font-black text-dark/10 mb-4 select-none">404</h1>
       <h2 className="text-3xl font-bold text-dark mb-4">Enquiry Not Found</h2>
       <p className="text-text-light max-w-md mb-10 leading-relaxed">
-        We couldn't find the enquiry or page you were looking for. It might have been removed or the link might be broken.
+        We couldn&apos;t find the enquiry or page you were looking for. It might have been removed or the link might be broken.
       </p>
       <Link 
         href="/enquiries" 

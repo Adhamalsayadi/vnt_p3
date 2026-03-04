@@ -3,13 +3,20 @@ import ContentsServices from "@/components/Service/servicescontents";
 import ServicesAds from "@/components/Service/servicesads";
 import { SERVICE_CATEGORIES } from "@/components/Service/services.data";
 import type { ServiceCategoryId } from "@/components/Service/service.types";
+import type { Metadata } from "next";
+import { buildPageMetadata } from "@/lib/seo";
+
+export const metadata: Metadata = buildPageMetadata({
+  title: "Services | V&T Platform",
+  description:
+    "Browse service categories and subcategories including transportation, rental, products, and manpower.",
+  path: "/services",
+});
 
 interface Props {
   searchParams: Promise<{ category?: string }>;
 }
 export default async function ServicesPage({ searchParams }: Props) {
-  await new Promise((promis) => setTimeout(promis, 1000));
-
   const params = await searchParams;
   const categoryFromUrl = params?.category;
 

@@ -58,4 +58,9 @@
   button:hover {
     transform: translateY(-2px);
   }
+
+  :focus-visible {
+    outline: 2px solid #f3d45a;
+    outline-offset: 2px;
+  }
 }

@@ -5,15 +5,8 @@ import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { LocationEdit } from "lucide-react";
 import CountrySelector from "@/components/shared/CountryModal";
-
-const NavbarLinks = [
-  { name: "home", href: "/" },
-  { name: "enquires", href: "/enquiries" },
-  { name: "advertisments", href: "/advertisments" },
-  { name: "services", href: "/services" },
-  { name: "about", href: "/about" },
-  { name: "contact", href: "/contact" },
-];
+import Button from "@/components/ui/button";
+import { NAV_LINKS } from "@/config/public";
 
 export default function Navbar() {
   const [selectedCountry, setSelectedCountry] = useState(() => {
@@ -34,14 +27,14 @@ export default function Navbar() {
   };
   return (
     <div className="max-w-[1200px] mx-auto px-6">
-      <div className="flex justify-between items-center p-4 ]">
+      <div className="flex justify-between items-center p-4">
         <ul className="flex items-center gap-8 w-[496px] p-3 ">
           <li className=" mr-2 ">
             <Link href={"/"} className="  flex items-center w-24 h-20">
               <Image src="/VT.png" alt="Logo" width={66} height={54} />
             </Link>
           </li>
-          {NavbarLinks.map((link) => {
+          {NAV_LINKS.map((link) => {
             const isActive = pathname === link.href;
             return (
               <li key={link.name} className="relative">
@@ -61,24 +54,21 @@ export default function Navbar() {
         </ul>
         <div className="flex items-center justify-end gap-4 ml-[300px]">
           <Link href={"/login"}>
-            <button className="bg-primary text-black font-semibold rounded-custom w-20 h-12.5 capitalize hover:-translate-y-0.5 transition-all">
-              Post
-            </button>
+            <Button className="w-20 capitalize">Post</Button>
           </Link>
           <Link href={"/login"}>
-            <button className="bg-transparent text-text font-semibold w-20 h-12.5 capitalize hover:text-primary transition-all">
+            <Button variant="ghost" className="w-20 capitalize">
               log in
-            </button>
+            </Button>
           </Link>
           <Link href={"/login"}>
-            <button className="bg-primary text-black font-semibold rounded-custom w-28 h-12.5 capitalize hover:-translate-y-0.5 transition-all">
-              sign up
-            </button>
+            <Button className="w-28 capitalize">sign up</Button>
           </Link>
           <div className="bg-primary w-[68.98px] h-12.5 rounded-custom flex items-center justify-center cursor-pointer transition-all hover:-translate-y-0.5">
             <button
               className="flex items-center justify-center w-full h-full"
               onClick={() => setIsCountryModalOpen(true)}
+              aria-label="Open country selector"
             >
               <LocationEdit size={24} />
             </button>

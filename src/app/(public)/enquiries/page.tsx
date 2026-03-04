@@ -5,14 +5,22 @@ import Mainlayout from "@/components/enquiries/components/mainlayout";
 import enquiriesData from "@/data/enquiries.json";
 import { EnquiryFilters } from "@/types/enquiries";
 import Pagination from "@/components/enquiries/components/Pagination";
+import EmptyState from "@/components/ui/empty-state";
+import type { Metadata } from "next";
+import { buildPageMetadata } from "@/lib/seo";
+
+export const metadata: Metadata = buildPageMetadata({
+  title: "Enquiries | V&T Platform",
+  description:
+    "Browse the latest procurement and service enquiries, filter by category, rating, and timeframe.",
+  path: "/enquiries",
+});
 
 interface Props {
   searchParams: Promise<EnquiryFilters & { page?: string }>;
 }
 
 export default async function EnquiriesPage({ searchParams }: Props) {
-  await new Promise((r) => setTimeout(r, 1000));
-
   const params = await searchParams;
   const page = Number(params.page) || 1;
   const pageSize = 10;
@@ -43,6 +51,22 @@ export default async function EnquiriesPage({ searchParams }: Props) {
   const totalPages = Math.ceil(filtered.length / pageSize);
   const start = (page - 1) * pageSize;
   const paginatedData = filtered.slice(start, start + pageSize);
+
+  if (filtered.length === 0) {
+    return (
+      <div>
+        <EnquiriesHero />
+        <SearchBar />
+        <Services />
+        <EmptyState
+          title="No enquiries match these filters"
+          description="Try broadening your search or clear filters to see all enquiries."
+          actionHref="/enquiries"
+          actionLabel="Clear Filters"
+        />
+      </div>
+    );
+  }
 
   return (
     <div>

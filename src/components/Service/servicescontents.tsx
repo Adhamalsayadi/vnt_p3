@@ -1,20 +1,36 @@
+import Button from "@/components/ui/button";
+import Section from "@/components/ui/section";
+
 interface Props {
   subCategories?: string[];
 }
 
 export default function ContentsServices({ subCategories = [] }: Props) {
+  if (subCategories.length === 0) {
+    return (
+      <Section className="min-h-[300px] mb-[100px] py-10">
+        <p role="status" className="text-text-muted">
+          No sub-categories available.
+        </p>
+      </Section>
+    );
+  }
+
   return (
-    <div className="max-w-[1200px] mx-auto px-6 min-h-[450px] mb-[100px]">
+    <Section className="min-h-[450px] mb-[100px]">
       <div className="grid grid-cols-5 gap-5 items-start justify-between py-[30px]">
         {subCategories.map((sub) => (
-          <button 
+          <Button
+            type="button"
+            size="md"
             key={sub}
-            className="w-[200px] h-[75px] rounded-[10px] border-none bg-[#ebeef5] text-dark font-medium transition-all hover:bg-primary/20"
+            variant="ghost"
+            className="w-[200px] h-[75px] bg-[#ebeef5] text-dark hover:bg-primary/20 hover:text-dark"
           >
             {sub}
-          </button>
+          </Button>
         ))}
       </div>
-    </div>
+    </Section>
   );
 }

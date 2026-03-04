@@ -2,6 +2,7 @@
 
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
+import { ENQUIRY_FILTERS } from "@/config/public";
 
 export default function SearchBar() {
   const router = useRouter();
@@ -41,22 +42,20 @@ export default function SearchBar() {
     <div className="flex rounded-[20px] min-h-[120px] gap-4 p-4">
       <form onSubmit={handleSubmit} className="flex justify-between items-center p-5 w-full gap-3">
         <input
+          id="search-query"
           type="search"
           placeholder="Search"
+          aria-label="Search enquiries"
           value={searchValue}
           onChange={(e) => setSearchValue(e.target.value)}
           className={`${inputSelectClasses} bg-bg-blue flex-1 min-w-[150px] pl-1.25 text-text-muted placeholder:text-text-muted`}
         />
 
-        {[
-          { key: "category", label: "all categories", options: ["Services", "Rental", "Products", "Man power"] },
-          { key: "subCategory", label: "sub categories", options: ["sub 1", "sub 2", "sub 3", "sub 4"] },
-          { key: "time", label: "select time", options: ["today", "this weak", "this month"] },
-          { key: "clientRate", label: "client rate", options: [{ v: "5", l: "5 stars" }, { v: "3", l: "3-5" }, { v: "1", l: "1-3" }] },
-          { key: "vtRate", label: "vT rate", options: [{ v: "5", l: "5 stars" }, { v: "3", l: "3-5" }, { v: "1", l: "1-3" }] },
-        ].map((select) => (
+        {ENQUIRY_FILTERS.map((select) => (
           <select
             key={select.key}
+            aria-label={select.label}
+            value={params.get(select.key) || ""}
             onChange={(e) => updateParam(select.key, e.target.value)}
             className={`${inputSelectClasses} w-[216px] capitalize text-center p-3`}
           >

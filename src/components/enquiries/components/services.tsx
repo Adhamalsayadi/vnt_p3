@@ -1,20 +1,16 @@
 import Image from "next/image";
-
-const services = [
-  { label: "Services", image: "/Services.png" },
-  { label: "Rental", image: "/for-rent.png" },
-  { label: "Products", image: "/received.png" },
-  { label: "Man power", image: "/power.png" },
-];
+import Section from "@/components/ui/section";
+import SurfaceCard from "@/components/ui/surface-card";
+import { HOME_SERVICE_OPTIONS } from "@/config/public";
 
 export default function Services() {
   return (
-    <div className="max-w-[1200px] mx-auto px-6">
+    <Section>
       <div className="flex flex-wrap items-center justify-center gap-5 my-8">
-        {services.map((service) => (
-          <button
+        {HOME_SERVICE_OPTIONS.map((service) => (
+          <SurfaceCard
             key={service.label}
-            className="flex items-center justify-center gap-[15px] bg-[#EFEFEF] w-[251.37px] h-[107px] rounded-[10px] border-none transition-all hover:-translate-y-1 hover:shadow-md"
+            className="flex items-center justify-center gap-[15px] bg-[#EFEFEF] w-[251.37px] h-[107px] p-3"
           >
             <Image
               src={service.image}
@@ -24,9 +20,9 @@ export default function Services() {
               className="p-0"
             />
             <div className="text-dark font-medium">{service.label}</div>
-          </button>
+          </SurfaceCard>
         ))}
       </div>
-    </div>
+    </Section>
   );
 }
