@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
@@ -9,20 +9,19 @@ import Button from "@/components/ui/button";
 import { NAV_LINKS } from "@/config/public";
 
 export default function Navbar() {
-  const [selectedCountry, setSelectedCountry] = useState(() => {
-    if (typeof window === "undefined") return "Saudi Arabia";
-    return localStorage.getItem("country") || "Saudi Arabia";
-  });
+  const [isCountryModalOpen, setIsCountryModalOpen] = useState(false);
+  const [selectedCountry, setSelectedCountry] = useState("Saudi Arabia");
 
-  const [isCountryModalOpen, setIsCountryModalOpen] = useState(() => {
-    if (typeof window === "undefined") return false;
-    return !localStorage.getItem("country");
-  });
   const pathname = usePathname();
 
   const handleCountrySelect = (country: string) => {
     setSelectedCountry(country);
-    localStorage.setItem("country", country);
+  };
+
+  const handleFinalSave = () => {
+    if (typeof window !== "undefined") {
+      localStorage.setItem("country", selectedCountry);
+    }
     setIsCountryModalOpen(false);
   };
   return (
@@ -52,7 +51,7 @@ export default function Navbar() {
             );
           })}
         </ul>
-        <div className="flex items-center justify-end gap-4 ml-[300px]">
+        <div className="flex items-center justify-end gap-4 ml-[280px]">
           <Link href={"/login"}>
             <Button className="w-20 capitalize">Post</Button>
           </Link>
@@ -77,9 +76,10 @@ export default function Navbar() {
       </div>
       <CountrySelector
         isOpen={isCountryModalOpen}
-        onClose={() => setIsCountryModalOpen(false)}
+        onClose={handleFinalSave}
         selectedCountry={selectedCountry}
         onSelect={handleCountrySelect}
+        onSave={handleFinalSave}
       />
     </div>
   );

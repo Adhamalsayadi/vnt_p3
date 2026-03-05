@@ -10,6 +10,7 @@ interface CountrySelectorProps {
   onClose: () => void;
   selectedCountry: string;
   onSelect: (country: string) => void;
+  onSave: () => void;
 }
 
 const CountrySelector = ({
@@ -17,6 +18,7 @@ const CountrySelector = ({
   onClose,
   selectedCountry,
   onSelect,
+  onSave,
 }: CountrySelectorProps) => {
   const closeButtonRef = useRef<HTMLButtonElement>(null);
 
@@ -67,7 +69,10 @@ const CountrySelector = ({
           </svg>
         </button>
 
-        <h2 id="country-modal-title" className="text-[32px] font-bold mb-10 text-[#333]">
+        <h2
+          id="country-modal-title"
+          className="text-[32px] font-bold mb-10 text-[#333]"
+        >
           Change country
         </h2>
 
@@ -102,7 +107,7 @@ const CountrySelector = ({
           })}
         </div>
 
-        <Button className="w-[160px]" onClick={onClose}>
+        <Button className="w-[160px]" onClick={onSave}>
           Save
         </Button>
       </div>
