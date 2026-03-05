@@ -4,9 +4,9 @@ import type { Metadata } from "next";
 import { buildPageMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = buildPageMetadata({
-  title: "V&T Platform | Procurement and Services Marketplace",
+  title: "VnT Platform | Procurement and Services Marketplace",
   description:
-    "Explore services, products, rentals, and manpower enquiries with V&T Platform.",
+    "Explore services, products, rentals, and manpower enquiries with VnT Platform.",
   path: "/",
 });
 

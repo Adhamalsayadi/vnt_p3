@@ -7,7 +7,7 @@ import type { Metadata } from "next";
 import { buildPageMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = buildPageMetadata({
-  title: "Services | V&T Platform",
+  title: "Services | VnT Platform",
   description:
     "Browse service categories and subcategories including transportation, rental, products, and manpower.",
   path: "/services",

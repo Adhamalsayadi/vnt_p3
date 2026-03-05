@@ -8,14 +8,17 @@ import {
 import Button from "@/components/ui/button";
 
 export default function ContactHero() {
-  const socialIconClasses = "p-2 rounded-md transition-colors hover:bg-white/10 cursor-pointer w-[30px] h-[30px]";
+  const socialIconClasses =
+    "p-2 rounded-md transition-colors hover:bg-white/10 cursor-pointer w-[40px] h-[40px]";
 
   return (
     <div className="max-w-[1200px] mx-auto px-6">
       <div className="flex relative min-h-[862px]">
         <div className="w-[334px] bg-bg-dark rounded-custom text-white py-10">
           <div className="p-[40px_24px]">
-            <h1 className="text-[18px] font-semibold mb-6 capitalize">contact us</h1>
+            <h1 className="text-[18px] font-semibold mb-6 capitalize">
+              contact us
+            </h1>
             <svg
               className="mb-8"
               width="72"
@@ -44,22 +47,59 @@ export default function ContactHero() {
           className="w-[800px] bg-white absolute left-[20%] top-[5%] p-8 rounded-custom shadow-[0_10px_30px_rgba(0,0,0,0.15)] flex flex-col items-start min-h-[500px] z-10"
           aria-label="Contact form"
         >
-          <h4 className="font-medium text-primary mb-4 text-xl capitalize">contact us</h4>
+          <h4 className="font-medium text-primary mb-4 text-xl capitalize">
+            contact us
+          </h4>
           <div className="flex gap-6 justify-between w-full mb-6">
             <div className="flex flex-col flex-1">
-              <label htmlFor="contact-name" className="block my-3 text-2xl font-medium text-text">Name</label>
-              <input id="contact-name" name="name" type="text" autoComplete="name" className="w-full h-[45px] p-3 bg-bg-blue border border-border-light rounded-lg text-sm transition-all focus:outline-none focus:border-primary focus:bg-white focus:shadow-[0_0_0_3px_rgba(243,212,90,0.1)]" />
+              <label
+                htmlFor="contact-name"
+                className="block my-3 text-2xl font-medium text-text"
+              >
+                Name
+              </label>
+              <input
+                id="contact-name"
+                name="name"
+                type="text"
+                autoComplete="name"
+                className="w-full h-[45px] p-3 bg-bg-blue border border-border-light rounded-lg text-sm transition-all focus:outline-none focus:border-primary focus:bg-white focus:shadow-[0_0_0_3px_rgba(243,212,90,0.1)]"
+              />
             </div>
             <div className="flex flex-col flex-1">
-              <label htmlFor="contact-email" className="block my-3 text-2xl font-medium text-text">Email</label>
-              <input id="contact-email" name="email" type="email" autoComplete="email" className="w-full h-[45px] p-3 bg-bg-blue border border-border-light rounded-lg text-sm transition-all focus:outline-none focus:border-primary focus:bg-white focus:shadow-[0_0_0_3px_rgba(243,212,90,0.1)]" />
+              <label
+                htmlFor="contact-email"
+                className="block my-3 text-2xl font-medium text-text"
+              >
+                Email
+              </label>
+              <input
+                id="contact-email"
+                name="email"
+                type="email"
+                autoComplete="email"
+                className="w-full h-[45px] p-3 bg-bg-blue border border-border-light rounded-lg text-sm transition-all focus:outline-none focus:border-primary focus:bg-white focus:shadow-[0_0_0_3px_rgba(243,212,90,0.1)]"
+              />
             </div>
           </div>
           <div className="w-full">
-            <label htmlFor="contact-message" className="block my-3 text-2xl font-medium text-text">Content</label>
-            <textarea id="contact-message" name="message" className="w-full h-[200px] p-3 bg-bg-blue border border-border-light rounded-lg text-sm transition-all focus:outline-none focus:border-primary focus:bg-white focus:shadow-[0_0_0_3px_rgba(243,212,90,0.1)] resize-none"></textarea>
+            <label
+              htmlFor="contact-message"
+              className="block my-3 text-2xl font-medium text-text"
+            >
+              Content
+            </label>
+            <textarea
+              id="contact-message"
+              name="message"
+              className="w-full h-[200px] p-3 bg-bg-blue border border-border-light rounded-lg text-sm transition-all focus:outline-none focus:border-primary focus:bg-white focus:shadow-[0_0_0_3px_rgba(243,212,90,0.1)] resize-none"
+            ></textarea>
           </div>
-          <Button type="submit" size="lg" className="w-[184px] mt-6 text-xl capitalize">
+          <Button
+            type="submit"
+            size="lg"
+            className="w-[184px] mt-6 text-xl capitalize"
+          >
             send message
           </Button>
         </form>

@@ -10,7 +10,7 @@ import { fetchEnquiries } from "@/lib/api/enquiries";
 import { EnquiryFilters } from "@/types/enquiries";
 
 export const metadata: Metadata = buildPageMetadata({
-  title: "Enquiries | V&T Platform",
+  title: "Enquiries | VnT Platform",
   description:
     "Browse the latest procurement and service enquiries, filter by category, rating, and timeframe.",
   path: "/enquiries",

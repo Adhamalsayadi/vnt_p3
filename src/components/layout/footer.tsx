@@ -13,7 +13,7 @@ import { FOOTER_SUPPORT_LINKS, FOOTER_USEFUL_LINKS } from "@/config/public";
 
 export default function Footer() {
   return (
-    <footer className="bg-white py-[60px] border-t border-[#e5e7eb] mt-[50px]">
+    <footer className="bg-white py-[60px] border-t border-[#e5e7eb] mt-[100px]">
       <div className="max-w-[1200px] mx-auto px-6 grid grid-cols-1 md:grid-cols-[2fr_1fr_1fr_1fr] gap-10">
         <div className="footer-info">
           <Image

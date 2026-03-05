@@ -17,7 +17,7 @@ export default function ContentsServices({ subCategories = [] }: Props) {
   }
 
   return (
-    <Section className="min-h-[450px] mb-[100px]">
+    <Section className="min-h-[150px] mb-[100px]">
       <div className="grid grid-cols-5 gap-5 items-start  justify-between py-[30px]">
         {subCategories.map((sub) => (
           <Button

@@ -1,7 +1,7 @@
 import { Metadata } from "next";
 
 const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
-const siteName = "V&T Platform";
+const siteName = "VnT Platform";
 
 type PageSEO = {
   title: string;
@@ -9,7 +9,11 @@ type PageSEO = {
   path: string;
 };
 
-export function buildPageMetadata({ title, description, path }: PageSEO): Metadata {
+export function buildPageMetadata({
+  title,
+  description,
+  path,
+}: PageSEO): Metadata {
   const url = new URL(path, baseUrl).toString();
 
   return {

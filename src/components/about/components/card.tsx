@@ -20,9 +20,17 @@ export default function AboutCard() {
 
   return (
     <Section>
-      <div className="flex flex-col md:flex-row justify-between mt-8 relative gap-6">
-        <SurfaceCard className={`${cardBaseClasses} md:absolute md:top-[15%] md:left-[33%] z-10`}>
-          <Image src={"/vision.png"} alt="vision" width={329} height={198} className="rounded-md self-center mb-4" />
+      <div className="flex flex-col md:flex-row justify-between mt-8 relative gap-6 ">
+        <SurfaceCard
+          className={`${cardBaseClasses} md:absolute md:top-[15%] md:left-[33%] z-10`}
+        >
+          <Image
+            src={"/vision.png"}
+            alt="vision"
+            width={329}
+            height={198}
+            className="rounded-md self-center mb-4"
+          />
           <h2 className="text-[18px] font-semibold text-dark mb-2">Vision</h2>
           <p className="text-text-muted leading-[1.6] text-sm">
             Helping our client to achieve their goals with high accuracy and
@@ -31,8 +39,16 @@ export default function AboutCard() {
         </SurfaceCard>
         {data.map((card) => (
           <SurfaceCard key={card.title} className={cardBaseClasses}>
-            <Image src={card.href} alt={card.title} width={329} height={198} className="rounded-md self-center mb-4" />
-            <h2 className="text-[18px] font-semibold text-dark mb-2">{card.title}</h2>
+            <Image
+              src={card.href}
+              alt={card.title}
+              width={329}
+              height={198}
+              className="rounded-md self-center mb-4"
+            />
+            <h2 className="text-[18px] font-semibold text-dark mb-2">
+              {card.title}
+            </h2>
             <p className="text-text-muted leading-[1.6] text-sm">{card.text}</p>
           </SurfaceCard>
         ))}

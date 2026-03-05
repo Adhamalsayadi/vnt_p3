@@ -1,5 +1,5 @@
 "use client";
-import { submitRFQAction } from "@/actions/actionbutton";
+import { submitAction } from "@/actions/actionbutton";
 
 import { useRouter, useSearchParams } from "next/navigation";
 
@@ -45,7 +45,7 @@ export default function Pagination({
           </button>
         );
       })}
-      <form action={submitRFQAction}>
+      <form action={submitAction}>
         <button
           type="submit"
           className="fixed bottom-[100px] right-10 bg-primary border-none p-[20px_30px] rounded-2xl font-bold text-lg shadow-[0_10px_30px_rgba(255,214,10,0.4)] cursor-pointer z-[100] transition-all hover:-translate-y-1 hover:shadow-[0_15px_35px_rgba(255,214,10,0.5)]"

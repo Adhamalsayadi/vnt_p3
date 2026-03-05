@@ -25,7 +25,18 @@
 
   --animate-loading-bounce: bounce 0.6s infinite alternate;
 }
+@theme {
+  @keyframes infinite-scroll {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-50%);
+    }
+  }
 
+  --animate-infinite-scroll: infinite-scroll 25s linear infinite;
+}
 @layer base {
   * {
     margin: 0;
