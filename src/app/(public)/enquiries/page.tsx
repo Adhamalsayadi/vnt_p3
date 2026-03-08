@@ -1,6 +1,6 @@
 import EnquiriesHero from "@/components/enquiries/enquirieshero";
 import SearchBar from "@/components/enquiries/searchbar";
-import ServiceGrid from "@/components/shared/Service";
+import ServiceGrid from "@/components/shared/service";
 import Mainlayout from "@/components/enquiries/mainlayout";
 import Pagination from "@/components/enquiries/Pagination";
 import EmptyState from "@/components/ui/empty-state";

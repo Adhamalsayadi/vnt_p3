@@ -11,7 +11,6 @@ export function buildPageMetadata({ title, description }: PageSEO): Metadata {
   return {
     title,
     description,
-    // Removed metadataBase and alternates to avoid URL requirements
     openGraph: {
       title,
       description,

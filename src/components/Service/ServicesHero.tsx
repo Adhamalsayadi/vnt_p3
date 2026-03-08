@@ -1,4 +1,4 @@
-import ServiceGrid from "@/components/shared/Service";
+import ServiceGrid from "@/components/shared/service";
 import type { ServiceCategory, ServiceCategoryId } from "@/types/service.types";
 
 interface Props {

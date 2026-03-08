@@ -1,4 +1,4 @@
-import ServicesHero from "@/components/service/ServicesHero";
+import ServicesHero from "@/components/service/servicesHero";
 import ContentsServices from "@/components/service/servicescontents";
 import ServicesAds from "@/components/service/servicesads";
 import { getServiceCategories } from "@/lib/api/services/services";
