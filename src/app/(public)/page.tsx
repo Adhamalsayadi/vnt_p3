@@ -1,4 +1,4 @@
-import Services from "@/components/services";
+import Services from "@/components/ui/services";
 import WhyChooseSection from "@/components/why-choose";
 import type { Metadata } from "next";
 import { buildPageMetadata } from "@/lib/seo";

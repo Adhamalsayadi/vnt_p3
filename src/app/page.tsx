@@ -1,6 +1,6 @@
 import Navbar from "@/components/layout/navbar";
 import HeroSection from "@/components/ui/herosection";
-import Services from "@/components/services";
+import Services from "@/components/ui/services";
 import WhyChooseSection from "@/components/why-choose";
 import Footer from "@/components/layout/footer";
 export default function HomePage() {
