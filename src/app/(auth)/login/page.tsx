@@ -3,25 +3,27 @@ import Image from "next/image";
 
 export default function LoginPage() {
   return (
-    <div className="min-h-screen flex flex-col bg-white relative">
-      <header className="flex justify-between items-center py-5 px-10 absolute top-0 w-full z-10">
+    <div className="min-h-screen flex flex-col bg-white relative overflow-x-hidden">
+      <header className="flex justify-between items-center py-4 px-6 md:py-5 md:px-10 absolute top-0 w-full z-20">
         <Link href="/" className="logo">
           <Image src="/VT.png" alt="V&T Logo" width={50} height={35} />
         </Link>
         <Link
           href="/signup"
-          className="bg-primary py-2.5 px-[30px] rounded-lg font-semibold text-[15px] hover:-translate-y-0.5 transition-all"
+          className="bg-primary py-2 px-6 md:py-2.5 md:px-[30px] rounded-lg font-semibold text-sm md:text-[15px] hover:-translate-y-0.5 transition-all"
         >
           Sign up
         </Link>
       </header>
 
-      <div className="flex flex-1 relative pt-[100px]">
-        <div className="w-[300px] bg-[#2d2d2d] rounded-r-[15px] flex p-[60px_40px] mt-[-20px] min-h-[calc(100vh-80px)]">
+      <div className="flex flex-col lg:flex-row flex-1 relative pt-[80px] md:pt-[100px]">
+        <div className="w-full lg:w-[300px] bg-[#2d2d2d] lg:rounded-r-[15px] flex p-10 md:p-[60px_40px] lg:min-h-[calc(100vh-100px)]">
           <div className="sidebar-text">
-            <h1 className="text-white text-[32px] font-bold mb-1.25">Log in</h1>
+            <h1 className="text-white text-2xl md:text-[32px] font-bold mb-1.25">
+              Log in
+            </h1>
             <svg
-              className="mb-8"
+              className="mb-4 lg:mb-8"
               width="72"
               height="16"
               viewBox="0 0 72 16"
@@ -38,32 +40,38 @@ export default function LoginPage() {
           </div>
         </div>
 
-        <div className="bg-white p-[40px_60px] rounded-xl shadow-[0_10px_40px_rgba(0,0,0,0.1)] absolute left-[220px] top-[140px] w-[1012px] z-[5]">
-          <p className="text-primary font-semibold mb-[30px] text-sm uppercase">
+        <div
+          className="bg-white p-6 md:p-10 lg:p-[40px_60px] rounded-xl shadow-[0_10px_40px_rgba(0,0,0,0.1)] 
+                        relative lg:absolute lg:left-[220px] lg:top-[140px] 
+                        w-[90%] mx-auto lg:mx-0 lg:w-[1012px] max-w-[1200px] 
+                        mt-[-40px] lg:mt-0 z-10"
+        >
+          <p className="text-primary font-semibold mb-6 md:mb-[30px] text-sm uppercase">
             log in
           </p>
-          <div className="mb-[25px]">
-            <label className="block text-[18px] font-semibold mb-2.5 text-[#333]">
+
+          <div className="mb-5 md:mb-[25px]">
+            <label className="block text-base md:text-[18px] font-semibold mb-2 text-[#333]">
               Email
             </label>
             <input
               type="email"
-              placeholder=""
-              className="w-[50%] p-[15px_20px] bg-[#ebeef5] border-none rounded-lg text-base outline-none"
+              className="w-full lg:w-[50%] p-3 md:p-[15px_20px] bg-[#ebeef5] border-none rounded-lg text-base outline-none focus:ring-2 focus:ring-primary/20"
             />
           </div>
-          <div className="mb-[25px]">
-            <label className="block text-[18px] font-semibold mb-2.5 text-[#333]">
+
+          <div className="mb-5 md:mb-[25px]">
+            <label className="block text-base md:text-[18px] font-semibold mb-2 text-[#333]">
               Password
             </label>
             <input
               type="password"
-              placeholder=""
-              className="w-[50%] p-[15px_20px] bg-[#ebeef5] border-none rounded-lg text-base outline-none"
+              className="w-full lg:w-[50%] p-3 md:p-[15px_20px] bg-[#ebeef5] border-none rounded-lg text-base outline-none focus:ring-2 focus:ring-primary/20"
             />
           </div>
-          <div className="flex justify-end mt-10">
-            <button className="bg-primary py-3 px-10 rounded-lg font-semibold text-base border-none hover:-translate-y-0.5 transition-all">
+
+          <div className="flex justify-center md:justify-end mt-8 md:mt-10">
+            <button className="w-full md:w-auto bg-primary py-3 px-10 rounded-lg font-semibold text-base border-none hover:-translate-y-0.5 transition-all shadow-md">
               Continue
             </button>
           </div>
