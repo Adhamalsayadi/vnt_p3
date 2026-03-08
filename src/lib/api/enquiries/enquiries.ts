@@ -2,11 +2,11 @@ import axios from "axios";
 import { AnyEnquiry } from "@/types/enquiries";
 
 const api = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000",
+  baseURL: "",
   headers: { "Content-Type": "application/json" },
 });
 
-const USE_REAL_API = false;
+const Python_ap = false;
 
 const mockEnquiries: AnyEnquiry[] = [
   {
@@ -180,7 +180,7 @@ export interface FetchEnquiriesParams {
 export async function fetchEnquiries(
   params: FetchEnquiriesParams
 ): Promise<{ data: AnyEnquiry[]; total: number }> {
-  if (USE_REAL_API) {
+  if (Python_ap) {
     try {
       const { data } = await api.get("/api/v1/enquiries", { params });
       return {

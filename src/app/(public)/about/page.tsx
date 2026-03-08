@@ -7,7 +7,6 @@ export const metadata: Metadata = buildPageMetadata({
   title: "About Us | VnT Platform",
   description:
     "Learn about VnT Platform mission, strategy, and vision for supporting procurement workflows.",
-  path: "/about",
 });
 
 export default async function AboutPage() {

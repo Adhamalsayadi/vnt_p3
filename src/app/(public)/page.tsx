@@ -7,7 +7,6 @@ export const metadata: Metadata = buildPageMetadata({
   title: "VnT Platform | Procurement and Services Marketplace",
   description:
     "Explore services, products, rentals, and manpower enquiries with VnT Platform.",
-  path: "/",
 });
 
 export default function HomePage() {

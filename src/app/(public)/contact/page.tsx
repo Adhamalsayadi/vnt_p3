@@ -6,7 +6,6 @@ export const metadata: Metadata = buildPageMetadata({
   title: "Contact Us | VnT Platform",
   description:
     "Get in touch with VnT Platform for enquiries, support, and service publishing requests.",
-  path: "/contact",
 });
 
 export default function ContactPage() {

@@ -1,37 +1,25 @@
 import { Metadata } from "next";
 
-const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
 const siteName = "VnT Platform";
 
 type PageSEO = {
   title: string;
   description: string;
-  path: string;
 };
 
-export function buildPageMetadata({
-  title,
-  description,
-  path,
-}: PageSEO): Metadata {
-  const url = new URL(path, baseUrl).toString();
-
+export function buildPageMetadata({ title, description }: PageSEO): Metadata {
   return {
     title,
     description,
-    metadataBase: new URL(baseUrl),
-    alternates: {
-      canonical: path,
-    },
+    // Removed metadataBase and alternates to avoid URL requirements
     openGraph: {
       title,
       description,
-      url,
       siteName,
       type: "website",
       images: [
         {
-          url: "/VT.png",
+          url: "/VT.png", // Next.js will resolve this relative to your public folder
           width: 1200,
           height: 630,
           alt: `${siteName} preview`,

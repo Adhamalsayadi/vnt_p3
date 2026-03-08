@@ -12,7 +12,6 @@ export const metadata: Metadata = buildPageMetadata({
   title: "Services | VnT Platform",
   description:
     "Browse service categories and subcategories including transportation, rental, products, and manpower.",
-  path: "/services",
 });
 
 interface Props {

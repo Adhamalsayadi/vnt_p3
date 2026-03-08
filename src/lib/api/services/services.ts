@@ -2,16 +2,16 @@ import type { ServiceCategory } from "@/types/service.types";
 import axios from "axios";
 
 export const api = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL || "",
+  baseURL: "",
   headers: {
     "Content-Type": "application/json",
   },
 });
 
-const USE_REAL_API = false;
+const Python_api = false;
 
 export async function getServiceCategories(): Promise<ServiceCategory[]> {
-  if (USE_REAL_API) {
+  if (Python_api) {
     try {
       const response = await api.get<ServiceCategory[]>("/api/categories");
       return response.data;
