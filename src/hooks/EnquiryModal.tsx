@@ -1,5 +1,6 @@
 "use client";
-import { submitAction } from "@/actions/actionbutton";
+
+import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import { AnyEnquiry } from "@/types/enquiries";
 
@@ -14,37 +15,64 @@ export default function EnquiryModal({
   enquiry,
   onClose,
   onOpenRating,
+  onSubmitRfq,
 }: EnquiryModalProps) {
-  const details = [
+  const tableRows = [
     {
-      leftLabel: "Category",
-      leftVal: enquiry.category,
-      rightLabel: "Sub Category",
-      rightVal: enquiry.subCategory,
+      leftL: "title",
+      leftV: enquiry.title,
+      rightL: "request type",
+      rightV: "normal",
+      isTag: true,
     },
     {
-      leftLabel: "Posted Time",
-      leftVal: enquiry.time,
-      rightLabel: "Type",
-      rightVal: enquiry.type,
+      leftL: "required_date",
+      leftV: "2024-03-01",
+      rightL: "enquiry_status",
+      rightV: "active",
     },
     {
-      leftLabel: "Client Rate",
-      leftVal: `${enquiry.clientRate}`,
-      rightLabel: "VT Rate",
-      rightVal: `${enquiry.vtRate}`,
+      leftL: "category",
+      leftV: enquiry.category || "-",
+      rightL: "qualification",
+      rightV: "QUALIFICATION",
+    },
+    {
+      leftL: "quantity",
+      leftV: "214",
+      rightL: "purpose",
+      rightV: "The Purpose of The Enquiry",
+    },
+    {
+      leftL: "enquiry eta",
+      leftV: "-",
+      rightL: "standard",
+      rightV: "STANDARD",
+    },
+    {
+      leftL: "offers_received",
+      leftV: "true",
+      rightL: "description",
+      rightV: "This Enquiry Description",
     },
   ];
 
   return (
-    <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center z-[2000] p-4 font-outfit">
-      <div className="bg-[#EEF0F2] w-full max-w-[950px] rounded-[24px] p-8 md:p-12 relative animate-in fade-in zoom-in duration-300 shadow-2xl overflow-hidden">
+    <div className="fixed inset-0 bg-black/40 backdrop-blur-[2px] flex items-center justify-center z-[9999] p-4 font-outfit">
+      <motion.div
+        initial={{ opacity: 0, scale: 0.95, y: 20 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
+        exit={{ opacity: 0, scale: 0.95, y: 20 }}
+        /* max-h-screen ensures it fits on small phones; overflow-y-auto allows internal scrolling */
+        className="bg-[#E9EDF7] w-full max-w-[700px] max-h-[95vh] rounded-[24px] p-5 md:p-8 relative shadow-2xl overflow-y-auto md:overflow-visible"
+      >
+        {/* Black Square Close Button - Stays fixed on desktop, moves for mobile visibility */}
         <button
           onClick={onClose}
-          className="absolute top-6 left-6 bg-black text-white w-10 h-10 rounded-lg flex items-center justify-center hover:bg-gray-800 transition-all z-20 active:scale-90"
+          className="absolute top-4 left-4 md:-top-3 md:-left-3 bg-black text-white w-9 h-9 rounded-[10px] flex items-center justify-center z-50 shadow-lg active:scale-90 transition-transform"
         >
           <svg
-            className="w-6 h-6"
+            className="w-5 h-5"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -52,70 +80,140 @@ export default function EnquiryModal({
             <path
               strokeLinecap="round"
               strokeLinejoin="round"
-              strokeWidth="2.5"
+              strokeWidth="3"
               d="M6 18L18 6M6 6l12 12"
             />
           </svg>
         </button>
 
-        <div className="grid grid-cols-1 lg:grid-cols-[1.2fr_0.8fr] gap-10 items-center">
-          <div className="flex flex-col">
-            <h2 className="text-[32px] md:text-[48px] font-medium mb-8 text-black tracking-tight leading-tight">
-              {enquiry.title}
-            </h2>
+        <div className="flex flex-col">
+          {/* Responsive Header - Centers on mobile, left-aligned on desktop */}
+          <h2 className="text-[26px] md:text-[36px] font-medium text-[#1A1A1A] mt-8 md:mt-0 mb-5 md:mb-6 leading-tight tracking-tight text-center md:text-left">
+            {enquiry.title}
+          </h2>
 
-            <div className="bg-[#D9D9D9]/50 rounded-[12px] overflow-hidden border border-gray-300">
-              {details.map((row, index) => (
-                <div
-                  key={index}
-                  className="grid grid-cols-4 border-b border-gray-300 last:border-none text-[13px]"
-                >
-                  <div className="bg-gray-200/50 p-3 font-semibold text-gray-600 border-r border-gray-300 capitalize">
-                    {row.leftLabel}
-                  </div>
-                  <div className="p-3 bg-white/30 font-bold text-black truncate border-r border-gray-300">
-                    {row.leftVal}
-                  </div>
-                  <div className="bg-gray-200/50 p-3 font-semibold text-gray-600 border-r border-gray-300 capitalize">
-                    {row.rightLabel}
-                  </div>
-                  <div className="p-3 bg-transparent font-bold text-black truncate">
-                    {row.rightVal}
-                  </div>
+          {/* Middle Section: Stacked on mobile, 2-cols on desktop */}
+          <div className="flex flex-col md:grid md:grid-cols-[1fr_240px] gap-6 md:gap-8 items-center mb-6">
+            {/* Image Slider */}
+            <div className="flex flex-col items-center w-full">
+              <div className="flex items-center gap-3 md:gap-4">
+                <button className="text-black/60 hover:text-black">
+                  <svg
+                    className="w-6 h-6 md:w-7 md:h-7"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2.5"
+                      d="M15 19l-7-7 7-7"
+                    />
+                  </svg>
+                </button>
+
+                {/* Responsive Image Circle */}
+                <div className="w-[140px] h-[140px] xs:w-[160px] xs:h-[160px] md:w-[190px] md:h-[190px] rounded-full overflow-hidden shadow-lg relative border-none">
+                  <Image
+                    src={enquiry.image || "/placeholder.jpg"}
+                    alt={enquiry.title}
+                    fill
+                    className="object-cover"
+                  />
                 </div>
-              ))}
-            </div>
-          </div>
 
-          <div className="flex flex-col items-center">
-            <div className="relative group mb-8">
-              <div className="w-[260px] h-[260px] rounded-full overflow-hidden border-[6px] border-[#EEF0F2] shadow-xl relative ring-1 ring-gray-200">
-                <Image
-                  src={enquiry.image || "/placeholder.jpg"}
-                  alt={enquiry.title}
-                  fill
-                  className="object-cover"
-                />
+                <button className="text-black/60 hover:text-black">
+                  <svg
+                    className="w-6 h-6 md:w-7 md:h-7"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2.5"
+                      d="M9 5l7 7-7 7"
+                    />
+                  </svg>
+                </button>
+              </div>
+
+              <div className="flex gap-1.5 mt-3">
+                <div className="w-1.5 h-1.5 rounded-full bg-gray-300" />
+                <div className="w-1.5 h-1.5 rounded-full bg-black" />
+                <div className="w-1.5 h-1.5 rounded-full bg-gray-300" />
               </div>
             </div>
 
-            <div className="w-full max-w-[280px] space-y-3">
+            {/* Action Buttons - Full width on mobile */}
+            <div className="flex flex-col gap-2 w-full max-w-[300px] md:max-w-none mx-auto">
+              <div className="w-full h-10 bg-[#F4D361] rounded-[8px] flex items-center px-4 text-[12px] font-semibold text-black/70 shadow-sm">
+                Required date
+              </div>
+
               <button
                 onClick={onOpenRating}
-                className="w-full h-10 bg-[#F2D361] rounded-[8px] flex items-center justify-between px-4 font-semibold text-[14px] text-gray-700 shadow-sm hover:brightness-95 transition-all"
+                className="w-full h-10 bg-[#F4D361] rounded-[8px] flex items-center justify-between px-4 text-[12px] font-semibold text-black/70 shadow-sm hover:brightness-95 transition-all"
               >
                 <span>Seller rating</span>
-                <span className="text-black font-bold">{enquiry.vtRate}</span>
+                <svg
+                  className="w-4 h-4"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.921-.755 1.688-1.54 1.118l-3.976-2.888a1 1 0 00-1.175 0l-3.976 2.888c-.784.57-1.838-.197-1.539-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"
+                  />
+                </svg>
               </button>
-              <form action={submitAction}>
-                <button className="w-full h-14 bg-[#F2D361] rounded-[8px] font-bold text-[18px] text-gray-800 shadow-md hover:brightness-95 transition-all active:scale-[0.98]">
-                  Submit your RFQ
-                </button>
-              </form>
+
+              <button
+                onClick={onSubmitRfq}
+                className="w-full h-[52px] md:h-[58px] bg-[#F4D361] rounded-[10px] font-bold text-[18px] md:text-[20px] text-black shadow-md hover:scale-[0.98] transition-all mt-1"
+              >
+                Submit your price
+              </button>
             </div>
           </div>
+
+          {/* Specification Table - Grid collapses to 2 columns on mobile */}
+          <div className="bg-[#D9D9D9]/25 rounded-[15px] overflow-hidden border border-gray-300/30">
+            {tableRows.map((row, i) => (
+              <div
+                key={i}
+                className="grid grid-cols-2 md:grid-cols-[120px_1fr_120px_1fr] border-b border-gray-300/30 last:border-none min-h-[40px]"
+              >
+                {/* Desktop layout: Label | Value | Label | Value */}
+                {/* Mobile layout: Wraps and stacks */}
+                <div className="p-3 text-[11px] text-gray-500 font-medium border-r border-gray-300/30 flex items-center bg-white/10">
+                  {row.leftL}
+                </div>
+                <div className="p-3 text-[11px] text-black font-bold border-r md:border-r border-gray-300/30 flex items-center truncate">
+                  {row.leftV}
+                </div>
+                <div className="p-3 text-[11px] text-gray-500 font-medium border-r border-gray-300/30 flex items-center bg-white/10">
+                  {row.rightL}
+                </div>
+                <div className="p-3 text-[11px] text-black font-bold flex items-center truncate gap-2">
+                  {row.isTag ? (
+                    <span className="bg-[#B7EFC5] text-[#1B4332] px-2 py-0.5 rounded-full text-[9px] font-extrabold uppercase tracking-tight">
+                      {row.rightV}
+                    </span>
+                  ) : (
+                    row.rightV
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
-      </div>
+      </motion.div>
     </div>
   );
 }
