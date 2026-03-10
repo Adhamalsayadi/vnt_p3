@@ -1,5 +1,4 @@
 "use client";
-import React from "react";
 import Image from "next/image";
 import { Enquiry } from "@/types/enquiries";
 import Button from "@/components/ui/button";
@@ -28,18 +27,18 @@ export default function EnquiriesCard({ enquiries = [] }: Props) {
 
   return (
     <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-      {enquiries.slice(0, 6).map((item) => (
+      {enquiries.map((item) => (
         <SurfaceCard
           key={item.id}
-          className="bbg-[#f5f5f5] flex flex-col items-center justify-center rounded-custom p-4 md:p-[20px_20px] text-center w-full"
+          className="bg-[#f5f5f5] flex flex-col items-center justify-center rounded-custom p-4 md:p-[20px_20px] text-center w-full"
         >
-          <h2 className="font-semibold text-[22px] text-dark mb-">
+          <h2 className="font-semibold text-[22px] text-dark mb-0">
             {item.title}
           </h2>
 
           <div className="flex relative p-2.5 mt-[-20px]">
             <p className="my-3 text-[#717171] leading-relaxed text-sm">
-              {item.category}
+              {item.categoryLabel || item.category}
             </p>
             <span className="w-px h-[103px] bg-[#8498bc] rounded-[2px] absolute top-[2%] left-1/2 -translate-x-1/2 rotate-90 scale-x-300"></span>
           </div>

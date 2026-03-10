@@ -1,27 +1,37 @@
-export interface FreeEnquiry {
-  id: string;
-  title: string;
-  category: string;
-  subCategory: string;
-  time: string;
-  clientRate: number;
-  vtRate: number;
-  image: string;
-  type: "free";
-}
-
 export interface Enquiry {
   id: string;
   title: string;
   category: string;
+  categoryLabel?: string;
   subCategory: string;
+  subCategoryLabel?: string;
+  sellerId: string;
+  sellerName: string;
   time: string;
   clientRate: number;
   vtRate: number;
   image: string;
-  type: "paid";
+  requiredDate: string;
+  requestType: string;
+  enquiryStatus: string;
+  quantity: number;
+  purpose: string;
+  enquiryEta: string;
+  standard: string;
+  offersReceived: boolean;
 }
-export type AnyEnquiry = Enquiry | FreeEnquiry;
+
+export interface SellerRatingCriterion {
+  code: string;
+  label: string;
+  score: number;
+}
+
+export interface SellerRating {
+  sellerId: string;
+  overall: number;
+  criteria: SellerRatingCriterion[];
+}
 
 export interface EnquiryFilters {
   search?: string;

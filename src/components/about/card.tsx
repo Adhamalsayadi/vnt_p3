@@ -2,19 +2,6 @@ import Image from "next/image";
 import Section from "@/components/ui/section";
 import SurfaceCard from "@/components/ui/surface-card";
 
-const data = [
-  {
-    title: "Mission",
-    href: "/mission.png",
-    text: "Ensuring the highest quality of services, safe, and timely execution of projects in accordance with clients intention and expectation",
-  },
-  {
-    title: "Strategy",
-    href: "/strategy.png",
-    text: "Experience, Accuracy, development is our goal and strategy. We creator chances",
-  },
-];
-
 export default function AboutCard() {
   const cardBaseClasses = "w-full md:w-[377px] h-[447px] p-5 flex flex-col";
 

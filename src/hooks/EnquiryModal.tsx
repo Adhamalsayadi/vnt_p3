@@ -2,10 +2,10 @@
 
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
-import { AnyEnquiry } from "@/types/enquiries";
-
+import { Enquiry } from "@/types/enquiries";
+import { submitAction } from "@/actions/actionbutton";
 interface EnquiryModalProps {
-  enquiry: AnyEnquiry;
+  enquiry: Enquiry;
   onClose: () => void;
   onOpenRating: () => void;
   onSubmitRfq: () => void;
@@ -22,38 +22,38 @@ export default function EnquiryModal({
       leftL: "title",
       leftV: enquiry.title,
       rightL: "request type",
-      rightV: "normal",
+      rightV: enquiry.requestType,
       isTag: true,
     },
     {
       leftL: "required_date",
-      leftV: "2024-03-01",
+      leftV: enquiry.requiredDate,
       rightL: "enquiry_status",
-      rightV: "active",
+      rightV: enquiry.enquiryStatus,
     },
     {
       leftL: "category",
-      leftV: enquiry.category || "-",
-      rightL: "qualification",
-      rightV: "QUALIFICATION",
+      leftV: enquiry.categoryLabel || enquiry.category || "-",
+      rightL: "sub category",
+      rightV: enquiry.subCategoryLabel || enquiry.subCategory || "-",
     },
     {
       leftL: "quantity",
-      leftV: "214",
+      leftV: enquiry.quantity.toString(),
       rightL: "purpose",
-      rightV: "The Purpose of The Enquiry",
+      rightV: enquiry.purpose,
     },
     {
       leftL: "enquiry eta",
-      leftV: "-",
+      leftV: enquiry.enquiryEta,
       rightL: "standard",
-      rightV: "STANDARD",
+      rightV: enquiry.standard,
     },
     {
       leftL: "offers_received",
-      leftV: "true",
-      rightL: "description",
-      rightV: "This Enquiry Description",
+      leftV: enquiry.offersReceived ? "true" : "false",
+      rightL: "seller",
+      rightV: enquiry.sellerName,
     },
   ];
 
@@ -63,10 +63,8 @@ export default function EnquiryModal({
         initial={{ opacity: 0, scale: 0.95, y: 20 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
         exit={{ opacity: 0, scale: 0.95, y: 20 }}
-        /* max-h-screen ensures it fits on small phones; overflow-y-auto allows internal scrolling */
         className="bg-[#E9EDF7] w-full max-w-[700px] max-h-[95vh] rounded-[24px] p-5 md:p-8 relative shadow-2xl overflow-y-auto md:overflow-visible"
       >
-        {/* Black Square Close Button - Stays fixed on desktop, moves for mobile visibility */}
         <button
           onClick={onClose}
           className="absolute top-4 left-4 md:-top-3 md:-left-3 bg-black text-white w-9 h-9 rounded-[10px] flex items-center justify-center z-50 shadow-lg active:scale-90 transition-transform"
@@ -87,14 +85,11 @@ export default function EnquiryModal({
         </button>
 
         <div className="flex flex-col">
-          {/* Responsive Header - Centers on mobile, left-aligned on desktop */}
           <h2 className="text-[26px] md:text-[36px] font-medium text-[#1A1A1A] mt-8 md:mt-0 mb-5 md:mb-6 leading-tight tracking-tight text-center md:text-left">
             {enquiry.title}
           </h2>
 
-          {/* Middle Section: Stacked on mobile, 2-cols on desktop */}
           <div className="flex flex-col md:grid md:grid-cols-[1fr_240px] gap-6 md:gap-8 items-center mb-6">
-            {/* Image Slider */}
             <div className="flex flex-col items-center w-full">
               <div className="flex items-center gap-3 md:gap-4">
                 <button className="text-black/60 hover:text-black">
@@ -113,7 +108,6 @@ export default function EnquiryModal({
                   </svg>
                 </button>
 
-                {/* Responsive Image Circle */}
                 <div className="w-[140px] h-[140px] xs:w-[160px] xs:h-[160px] md:w-[190px] md:h-[190px] rounded-full overflow-hidden shadow-lg relative border-none">
                   <Image
                     src={enquiry.image || "/placeholder.jpg"}
@@ -147,7 +141,6 @@ export default function EnquiryModal({
               </div>
             </div>
 
-            {/* Action Buttons - Full width on mobile */}
             <div className="flex flex-col gap-2 w-full max-w-[300px] md:max-w-none mx-auto">
               <div className="w-full h-10 bg-[#F4D361] rounded-[8px] flex items-center px-4 text-[12px] font-semibold text-black/70 shadow-sm">
                 Required date
@@ -172,25 +165,20 @@ export default function EnquiryModal({
                   />
                 </svg>
               </button>
-
-              <button
-                onClick={onSubmitRfq}
-                className="w-full h-[52px] md:h-[58px] bg-[#F4D361] rounded-[10px] font-bold text-[18px] md:text-[20px] text-black shadow-md hover:scale-[0.98] transition-all mt-1"
-              >
-                Submit your price
-              </button>
+              <form action={submitAction}>
+                <button className="w-full h-[52px] md:h-[58px] bg-[#F4D361] rounded-[10px] font-bold text-[18px] md:text-[20px] text-black shadow-md hover:scale-[0.98] transition-all mt-1">
+                  Submit your price
+                </button>
+              </form>
             </div>
           </div>
 
-          {/* Specification Table - Grid collapses to 2 columns on mobile */}
           <div className="bg-[#D9D9D9]/25 rounded-[15px] overflow-hidden border border-gray-300/30">
             {tableRows.map((row, i) => (
               <div
                 key={i}
                 className="grid grid-cols-2 md:grid-cols-[120px_1fr_120px_1fr] border-b border-gray-300/30 last:border-none min-h-[40px]"
               >
-                {/* Desktop layout: Label | Value | Label | Value */}
-                {/* Mobile layout: Wraps and stacks */}
                 <div className="p-3 text-[11px] text-gray-500 font-medium border-r border-gray-300/30 flex items-center bg-white/10">
                   {row.leftL}
                 </div>

@@ -14,20 +14,19 @@ import { FOOTER_SUPPORT_LINKS, FOOTER_USEFUL_LINKS } from "@/config/public";
 export default function Footer() {
   return (
     <footer className="bg-white py-10 md:py-[60px] border-t border-[#e5e7eb] mt-12 md:mt-[100px]">
-      <div className="max-w-[1200px] mx-auto px-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-[2fr_1fr_1fr_1fr] gap-10">
-        {/* Info Section */}
+      <div className="max-w-[1200px] mx-auto px-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-[2fr_1fr_1fr_1fr] gap-10 text-center sm:text-left">
         <div className="footer-info">
           <Image
             src="/VT.png"
             alt="Logo"
             width={66}
             height={54}
-            className="logo-image"
+            className="logo-image mx-auto sm:mx-0"
           />
-          <p className="my-5 text-[#666] max-w-[250px] text-sm md:text-base">
+          <p className="my-5 text-[#666] max-w-[250px] mx-auto sm:mx-0 text-sm md:text-base">
             A company to publish services across multiple industries.
           </p>
-          <div className="flex gap-[15px] text-dark">
+          <div className="flex justify-center sm:justify-start gap-[15px] text-dark">
             <SocialIcon href="#" label="Facebook">
               <Facebook size={18} />
             </SocialIcon>
@@ -46,18 +45,16 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* Links Sections */}
         <FooterColumn title="Useful Links" links={FOOTER_USEFUL_LINKS} />
         <FooterColumn title="Support" links={FOOTER_SUPPORT_LINKS} />
 
-        {/* Contact Section */}
         <div className="footer-links">
           <h3 className="mb-5 text-[18px] font-semibold">Contacts us</h3>
           <ul className="space-y-2.5">
             <li>
               <Link
                 href="mailto:Vnt@gmail.com"
-                className="flex items-center gap-2 text-[#666] hover:text-primary transition-colors text-sm md:text-base"
+                className="flex items-center justify-center sm:justify-start gap-2 text-[#666] hover:text-primary transition-colors text-sm md:text-base"
               >
                 <Mail size={16} className="shrink-0" />
                 <span className="break-all">Vnt@gmail.com</span>
@@ -66,7 +63,7 @@ export default function Footer() {
             <li>
               <Link
                 href="tel:0101235772"
-                className="flex items-center gap-2 text-[#666] hover:text-primary transition-colors text-sm md:text-base"
+                className="flex items-center justify-center sm:justify-start gap-2 text-[#666] hover:text-primary transition-colors text-sm md:text-base"
               >
                 <Phone size={16} className="shrink-0" />
                 (010) 123 – 5772

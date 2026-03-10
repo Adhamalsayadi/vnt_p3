@@ -1,12 +1,33 @@
 "use client";
 import Button from "@/components/ui/button";
 import Section from "@/components/ui/section";
+import { useRouter, useSearchParams } from "next/navigation";
 
 interface Props {
   subCategories?: string[];
+  categoryId?: string;
 }
 
-export default function ContentsServices({ subCategories = [] }: Props) {
+export default function ContentsServices({
+  subCategories = [],
+  categoryId,
+}: Props) {
+  const router = useRouter();
+  const params = useSearchParams();
+
+  const buildSubCategoryHref = (subCategory: string) => {
+    const next = new URLSearchParams(params.toString());
+    next.set("subCategory", subCategory);
+    next.set("source", "dropdown");
+    next.delete("page");
+
+    if (categoryId) {
+      next.set("category", categoryId);
+    }
+
+    return `?${next.toString()}`;
+  };
+
   if (subCategories.length === 0) {
     return (
       <Section className="py-2">
@@ -26,6 +47,7 @@ export default function ContentsServices({ subCategories = [] }: Props) {
             size="md"
             key={sub}
             variant="ghost"
+            onClick={() => categoryId && router.push(buildSubCategoryHref(sub))}
             className={
               "w-full h-[75px] text-dark hover:text-dark !bg-[#C3C3C3] rounded-md"
             }

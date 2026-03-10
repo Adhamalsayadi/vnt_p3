@@ -13,6 +13,7 @@ interface Props {
   variant: "hero" | "home" | "enquiries";
   activeId?: string;
   onItemClick?: (item: ServiceItem) => void;
+  disableNavigation?: boolean;
 }
 
 export default function ServiceGrid({
@@ -20,6 +21,7 @@ export default function ServiceGrid({
   variant,
   activeId,
   onItemClick,
+  disableNavigation = false,
 }: Props) {
   const baseClass =
     "flex items-center justify-center gap-[15px] transition-all duration-300";
@@ -47,7 +49,10 @@ export default function ServiceGrid({
             ? `/enquiries?category=${item.id}`
             : `/services?category=${item.id}`;
 
-        if (variant === "hero" || variant === "enquiries") {
+        if (
+          (variant === "hero" || variant === "enquiries") &&
+          !disableNavigation
+        ) {
           const finalHref =
             variant === "enquiries"
               ? `/enquiries?category=${item.id}&source=icon`
@@ -69,13 +74,20 @@ export default function ServiceGrid({
         }
 
         return (
-          <div
-            key={item.label}
-            className={`${baseClass} ${variantClasses[variant]}`}
+          <button
+            key={item.id}
+            className={`${baseClass} ${
+              variantClasses[variant]
+            } cursor-pointer ${
+              isActive
+                ? "bg-primary shadow-sm"
+                : "bg-[#EFEFEF] hover:shadow-md hover:-translate-y-0.5"
+            }`}
             onClick={() => onItemClick?.(item)}
+            type="button"
           >
             {content}
-          </div>
+          </button>
         );
       })}
     </div>

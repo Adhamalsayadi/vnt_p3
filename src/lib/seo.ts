@@ -18,7 +18,7 @@ export function buildPageMetadata({ title, description }: PageSEO): Metadata {
       type: "website",
       images: [
         {
-          url: "/VT.png", // Next.js will resolve this relative to your public folder
+          url: "/VT.png",
           width: 1200,
           height: 630,
           alt: `${siteName} preview`,

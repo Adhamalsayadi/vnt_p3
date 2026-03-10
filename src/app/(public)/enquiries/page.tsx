@@ -43,7 +43,10 @@ async function EnquiriesContent({ searchParams }: Props) {
       />
 
       {activeCategory && (
-        <ContentsServices subCategories={activeCategory.subCategories} />
+        <ContentsServices
+          subCategories={activeCategory.subCategories}
+          categoryId={activeCategory.id}
+        />
       )}
 
       {enquiryResult.data.length === 0 ? (

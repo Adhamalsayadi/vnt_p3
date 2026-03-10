@@ -11,13 +11,5 @@ export async function submitAction(formData: FormData) {
     redirect("/login");
   }
 
-  const itemId = formData.get("itemId")?.toString();
-
-  if (!itemId) {
-    throw new Error("No item ID provided");
-  }
-
-  console.log("Submitting RFQ for item:", itemId);
-
   return;
 }
