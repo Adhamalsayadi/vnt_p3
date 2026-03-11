@@ -19,7 +19,7 @@ export async function loginUser(
     return { success: true, message: "Login successful", role: "Client" };
   }
 
-  if (email === "mock@m.com" && password === "mock") {
+  if (email === "mocks@m.com" && password === "mock") {
     return { success: true, message: "Login successful", role: "Supplier" };
   }
 
