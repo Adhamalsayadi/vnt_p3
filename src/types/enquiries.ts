@@ -19,6 +19,9 @@ export interface Enquiry {
   enquiryEta: string;
   standard: string;
   offersReceived: boolean;
+  createdByUserId?: string;
+  createdByUserName?: string;
+  isHidden?: boolean;
 }
 
 export interface SellerRatingCriterion {

@@ -5,9 +5,11 @@ import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/navigation"; // 1. Import useRouter
 import { loginUser } from "@/lib/api/auth/login";
+import { useAuthStore } from "@/store/authStore";
 
 export default function LoginPage() {
   const router = useRouter(); // 2. Initialize router
+  const setUser = useAuthStore((state) => state.setUser);
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -22,14 +24,16 @@ export default function LoginPage() {
     try {
       const result = await loginUser(email, password);
 
-      if (result.success && result.role) {
-        // 3. REDIRECT LOGIC BASED ON ROLE
+      if (result.success && result.role && result.user) {
+        // 3. Store user in global auth store
+        setUser(result.user);
 
+        // 4. REDIRECT LOGIC BASED ON ROLE
         if (result.role === "Client") {
-          // Redirect Client to Client Dashboard
           router.push("/client");
+        } else if (result.role === "Admin") {
+          router.push("/marketer");
         } else {
-          // Redirect Supplier to Supplier Dashboard
           router.push("/supplier");
         }
       } else {

@@ -1,5 +1,6 @@
 import "./globals.css";
 import type { Metadata } from "next";
+import QueryProvider from "@/providers/QueryProvider";
 
 const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
 
@@ -23,7 +24,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="overflow-x-hidden antialiased">
-        <main className="relative w-full overflow-x-hidden">{children}</main>
+        <QueryProvider>
+          <main className="relative w-full overflow-x-hidden">{children}</main>
+        </QueryProvider>
       </body>
     </html>
   );

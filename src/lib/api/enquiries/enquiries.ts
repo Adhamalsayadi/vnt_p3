@@ -273,7 +273,14 @@ const mockEnquiries: Enquiry[] = [
     standard: "API 600",
     offersReceived: true,
   },
-];
+].map((enquiry, index) => ({
+  ...enquiry,
+  createdByUserId: index % 2 === 0 ? "1" : "2",
+  createdByUserName: index % 2 === 0 ? "m" : "Demo Client",
+  isHidden: false,
+}));
+
+let mockEnquiriesStore: Enquiry[] = [...mockEnquiries];
 
 const mockSellerRatings: Record<string, SellerRating> = {
   "s-001": {
@@ -426,6 +433,15 @@ export interface FetchEnquiriesParams {
   vtRate?: string;
   page?: number;
   pageSize?: number;
+  userId?: string;
+  onlyMyEnquiries?: boolean;
+  includeHidden?: boolean;
+}
+
+export interface UpdateEnquiryPayload {
+  title?: string;
+  quantity?: number;
+  enquiryStatus?: string;
 }
 
 export async function fetchEnquiries(
@@ -446,7 +462,7 @@ export async function fetchEnquiries(
 
   await new Promise((resolve) => setTimeout(resolve, 800));
 
-  const filtered = mockEnquiries.filter((item) => {
+  const filtered = mockEnquiriesStore.filter((item) => {
     const query = params.search?.toLowerCase();
     const searchMatch = query
       ? item.title.toLowerCase().includes(query) ||
@@ -473,13 +489,22 @@ export async function fetchEnquiries(
       ? item.vtRate >= Number(params.vtRate)
       : true;
 
+    const ownerMatch =
+      params.onlyMyEnquiries && params.userId
+        ? item.createdByUserId === params.userId
+        : true;
+
+    const hiddenMatch = params.includeHidden ? true : !item.isHidden;
+
     return (
       searchMatch &&
       categoryMatch &&
       subCategoryMatch &&
       timeMatch &&
       clientRateMatch &&
-      vtRateMatch
+      vtRateMatch &&
+      ownerMatch &&
+      hiddenMatch
     );
   });
 
@@ -491,6 +516,87 @@ export async function fetchEnquiries(
     data: filtered.slice(start, start + pageSize),
     total: filtered.length,
   };
+}
+
+export async function updateEnquiryById(
+  enquiryId: string,
+  payload: UpdateEnquiryPayload
+): Promise<Enquiry | null> {
+  if (Python_ap) {
+    try {
+      const { data } = await api.patch(
+        `/api/v1/enquiries/${enquiryId}`,
+        payload
+      );
+      return data?.item || data?.data || data;
+    } catch (error) {
+      console.error("Axios Update Enquiry Error:", error);
+      return null;
+    }
+  }
+
+  await new Promise((resolve) => setTimeout(resolve, 250));
+  const index = mockEnquiriesStore.findIndex((item) => item.id === enquiryId);
+  if (index === -1) return null;
+
+  const current = mockEnquiriesStore[index];
+  const updated: Enquiry = {
+    ...current,
+    ...payload,
+    enquiryStatus: payload.enquiryStatus ?? current.enquiryStatus,
+    quantity: payload.quantity ?? current.quantity,
+    title: payload.title ?? current.title,
+  };
+
+  mockEnquiriesStore[index] = updated;
+  return updated;
+}
+
+export async function deleteEnquiryById(enquiryId: string): Promise<boolean> {
+  if (Python_ap) {
+    try {
+      await api.delete(`/api/v1/enquiries/${enquiryId}`);
+      return true;
+    } catch (error) {
+      console.error("Axios Delete Enquiry Error:", error);
+      return false;
+    }
+  }
+
+  await new Promise((resolve) => setTimeout(resolve, 250));
+  const currentLength = mockEnquiriesStore.length;
+  mockEnquiriesStore = mockEnquiriesStore.filter(
+    (item) => item.id !== enquiryId
+  );
+  return mockEnquiriesStore.length < currentLength;
+}
+
+export async function toggleEnquiryVisibility(
+  enquiryId: string
+): Promise<Enquiry | null> {
+  if (Python_ap) {
+    try {
+      const { data } = await api.patch(
+        `/api/v1/enquiries/${enquiryId}/visibility`
+      );
+      return data?.item || data?.data || data;
+    } catch (error) {
+      console.error("Axios Toggle Visibility Error:", error);
+      return null;
+    }
+  }
+
+  await new Promise((resolve) => setTimeout(resolve, 250));
+  const index = mockEnquiriesStore.findIndex((item) => item.id === enquiryId);
+  if (index === -1) return null;
+
+  const updated: Enquiry = {
+    ...mockEnquiriesStore[index],
+    isHidden: !mockEnquiriesStore[index].isHidden,
+  };
+
+  mockEnquiriesStore[index] = updated;
+  return updated;
 }
 
 export async function fetchSellerRatingBySellerId(

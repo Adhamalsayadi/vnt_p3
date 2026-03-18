@@ -1,7 +1,10 @@
+import { User } from "@/types/users";
+
 export interface LoginResponse {
   success: boolean;
   message: string;
   role?: "Client" | "Supplier";
+  user?: User;
 }
 
 export async function loginUser(
@@ -16,11 +19,27 @@ export async function loginUser(
   // and get the real user role.
 
   if (email === "mock@m.com" && password === "mock") {
-    return { success: true, message: "Login successful", role: "Client" };
+    return {
+      success: true,
+      message: "Login successful",
+      role: "Client",
+      user: { id: "1", name: "Demo Client", email, role: "Client", phone: "" },
+    };
   }
 
   if (email === "mocks@m.com" && password === "mock") {
-    return { success: true, message: "Login successful", role: "Supplier" };
+    return {
+      success: true,
+      message: "Login successful",
+      role: "Supplier",
+      user: {
+        id: "2",
+        name: "Demo Supplier",
+        email,
+        role: "Supplier",
+        phone: "",
+      },
+    };
   }
 
   return { success: false, message: "Invalid email or password" };
