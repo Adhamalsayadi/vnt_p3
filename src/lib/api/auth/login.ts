@@ -23,7 +23,7 @@ export async function loginUser(
       success: true,
       message: "Login successful",
       role: "Client",
-      user: { id: "1", name: "Demo Client", email, role: "Client", phone: "" },
+      user: { id: "1", name: "mock Client", email, role: "Client", phone: "" },
     };
   }
 
@@ -34,7 +34,7 @@ export async function loginUser(
       role: "Supplier",
       user: {
         id: "2",
-        name: "Demo Supplier",
+        name: "mock Supplier",
         email,
         role: "Supplier",
         phone: "",
