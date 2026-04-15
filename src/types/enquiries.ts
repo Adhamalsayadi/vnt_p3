@@ -25,6 +25,7 @@ export interface Enquiry {
   acceptedPrice?: number | null;
   vtmStatus: string;
   adminStatus: string;
+  unit?: string;
 }
 
 export interface SellerRatingCriterion {

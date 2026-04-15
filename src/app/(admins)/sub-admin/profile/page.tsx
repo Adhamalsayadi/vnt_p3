@@ -11,20 +11,9 @@ import {
   Save, 
   ShieldCheck,
   ChevronRight,
-  MapPin
-} from "lucide-react";
-
-import { 
-  User, 
-  ShieldCheck,
-  ChevronRight,
-  Camera,
-  Lock,
-  ArrowLeft,
-  Mail,
-  Phone,
   MapPin,
-  Save
+  Lock,
+  ArrowLeft
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
