@@ -1,4 +1,5 @@
 "use client";
+import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -14,8 +15,9 @@ import {
   X,
   LogOut,
 } from "lucide-react";
-import { useState } from "react";
 import { cn } from "@/lib/utils";
+import { useAuthStore } from "@/store/authStore";
+import { removeAuthCookie } from "@/actions/auth";
 
 interface SidebarProps {
   role: "Client" | "Supplier" | "Marketer";
@@ -24,6 +26,7 @@ interface SidebarProps {
 const Sidebar = ({ role }: SidebarProps) => {
   const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
+  const setUser = useAuthStore((state) => state.setUser);
 
   const clientLinks = [
     {
@@ -148,7 +151,11 @@ const Sidebar = ({ role }: SidebarProps) => {
         <div className="lg:hidden mt-auto pt-6 border-t border-[#F2F4F7]">
           <button
             className="w-full flex items-center gap-3 p-3 text-red-600 font-bold"
-            onClick={() => (window.location.href = "/")}
+            onClick={async () => {
+              setUser(null);
+              await removeAuthCookie();
+              window.location.href = "/";
+            }}
           >
             <LogOut size={18} />
             Logout

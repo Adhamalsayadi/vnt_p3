@@ -17,6 +17,7 @@ import {
 import Button from "@/components/ui/button";
 import { NAV_LINKS } from "@/config/public";
 import { useAuthStore } from "@/store/authStore";
+import { removeAuthCookie } from "@/actions/auth";
 
 interface HeaderProps {
   role: "Client" | "Supplier" | "Marketer";
@@ -39,7 +40,7 @@ export default function Header({ role }: HeaderProps) {
       : "/client";
 
   const profileHref = `${dashboardHref}/profile`;
-  const securityHref = `${dashboardHref}/reset-password`;
+  const securityHref = `${dashboardHref}/change-password`;
 
   const pageTitle = useMemo(() => {
     if (!pathname) {
@@ -81,10 +82,11 @@ export default function Header({ role }: HeaderProps) {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  const handleSignOut = () => {
+  const handleSignOut = async () => {
     setIsDropdownOpen(false);
     setIsMobileMenuOpen(false);
     setUser(null);
+    await removeAuthCookie();
     router.push("/");
   };
 

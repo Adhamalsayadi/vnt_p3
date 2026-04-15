@@ -8,10 +8,14 @@ import {
   RefreshCcw,
   ChevronRight,
   ChevronLeft,
-  ChevronDown
+  ChevronDown,
+  ChevronFirst,
+  ChevronLast
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
+import EditStatusModal from "@/components/shared/EditStatusModal";
+import { useRouter } from "next/navigation";
 
 const mockClients = [
   { id: 1, name: "Company name test", code: "SA-CL-23BRX20DE", vtmStatus: "rejected", adminStatus: "pending" },
@@ -29,13 +33,22 @@ function StatusPill({ status }: { status: string }) {
   }[s] || "bg-[#F2F4F7] text-[#666]";
 
   return (
-    <span className={cn("px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider", styles)}>
+    <span className={cn("px-3 py-1 rounded-full text-[10px] font-black tracking-wider", styles)}>
       {s}
     </span>
   );
 }
 
 export default function SuperAdminClients() {
+  const router = useRouter();
+  const [isStatusModalOpen, setIsStatusModalOpen] = useState(false);
+  const [selectedClient, setSelectedClient] = useState<any>(null);
+
+  const handleEditStatus = (client: any) => {
+    setSelectedClient(client);
+    setIsStatusModalOpen(true);
+  };
+
   return (
     <div className="flex min-h-screen bg-[#F5F5F5]">
       <AdminSidebar role="SuperAdmin" />
@@ -52,20 +65,20 @@ export default function SuperAdminClients() {
               <span className="text-[#333]">clients</span>
             </div>
 
-            <h1 className="text-2xl font-bold text-[#333] mb-6">clients</h1>
+            <h1 className="text-2xl font-bold text-[#333] mb-8 lowercase">clients</h1>
 
             {/* Table Card */}
-            <div className="bg-white rounded-[20px] shadow-sm border border-[#F2F4F7] overflow-hidden">
+            <div className="bg-white rounded-[32px] shadow-sm border border-[#F2F4F7] overflow-hidden">
                <div className="overflow-x-auto">
                   <table className="w-full text-left border-collapse">
                     <thead>
                       <tr className="border-b border-[#F2F4F7]">
-                        <th className="px-8 py-5 text-[11px] font-bold text-[#999] uppercase tracking-wider w-16">#</th>
-                        <th className="px-8 py-5 text-[11px] font-bold text-[#999] uppercase tracking-wider">COMPANY NAME</th>
-                        <th className="px-8 py-5 text-[11px] font-bold text-[#999] uppercase tracking-wider">CODE</th>
-                        <th className="px-8 py-5 text-[11px] font-bold text-[#999] uppercase tracking-wider">VTM STATUS</th>
-                        <th className="px-8 py-5 text-[11px] font-bold text-[#999] uppercase tracking-wider">ADMIN STATUS</th>
-                        <th className="px-8 py-5 text-[11px] font-bold text-[#999] uppercase tracking-wider text-right">ACTIONS</th>
+                        <th className="px-8 py-6 text-[11px] font-bold text-[#999] uppercase tracking-wider w-16">#</th>
+                        <th className="px-8 py-6 text-[11px] font-bold text-[#999] uppercase tracking-wider">COMPANY NAME</th>
+                        <th className="px-8 py-6 text-[11px] font-bold text-[#999] uppercase tracking-wider">CODE</th>
+                        <th className="px-8 py-6 text-[11px] font-bold text-[#999] uppercase tracking-wider">VTM STATUS</th>
+                        <th className="px-8 py-6 text-[11px] font-bold text-[#999] uppercase tracking-wider">ADMIN STATUS</th>
+                        <th className="px-8 py-6 text-[11px] font-bold text-[#999] uppercase tracking-wider text-right">ACTIONS</th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-[#F2F4F7]">
@@ -73,9 +86,12 @@ export default function SuperAdminClients() {
                         <tr key={client.id} className="hover:bg-[#F9FAFB] transition-colors group">
                           <td className="px-8 py-5 text-sm font-medium text-[#333]">{client.id}</td>
                           <td className="px-8 py-5">
-                            <span className="text-sm font-bold text-[#333] underline decoration-transparent group-hover:decoration-[#333] transition-all cursor-pointer">
+                            <Link
+                              href={`/super-admin/clients/${client.id}`}
+                              className="text-sm font-medium text-[#1D1F24] underline hover:no-underline transition-all"
+                            >
                               {client.name}
-                            </span>
+                            </Link>
                           </td>
                           <td className="px-8 py-5">
                             <span className="text-sm font-medium text-[#666]">{client.code}</span>
@@ -88,8 +104,18 @@ export default function SuperAdminClients() {
                           </td>
                           <td className="px-8 py-5 text-right">
                              <div className="flex items-center justify-end gap-3 text-[#999]">
-                               <button className="hover:text-primary transition-colors"><Eye size={18} /></button>
-                               <button className="hover:text-[#333] transition-colors"><RefreshCcw size={16} /></button>
+                               <Link
+                                 href={`/super-admin/clients/${client.id}`}
+                                 className="hover:text-[#333] transition-colors"
+                               >
+                                 <Eye size={18} />
+                               </Link>
+                               <button 
+                                 onClick={() => handleEditStatus(client)}
+                                 className="hover:text-[#333] transition-colors"
+                               >
+                                 <RefreshCcw size={18} />
+                               </button>
                              </div>
                           </td>
                         </tr>
@@ -99,21 +125,23 @@ export default function SuperAdminClients() {
                </div>
 
                {/* Pagination */}
-               <div className="p-6 flex items-center justify-between border-t border-[#F2F4F7]">
-                  <div className="flex items-center gap-3">
-                    <span className="text-[13px] font-medium text-[#666]">items per page</span>
+               <div className="p-10 flex items-center justify-between border-t border-[#F2F4F7]">
+                  <div className="flex items-center gap-4">
+                    <span className="text-[13px] font-bold text-[#666]">items per page</span>
                     <div className="relative group">
-                      <select className="appearance-none bg-[#F9FAFB] border border-[#EAECF0] rounded-lg px-4 py-2 pr-10 text-[13px] font-bold text-[#1D1F24] outline-none cursor-pointer">
+                      <select className="appearance-none bg-[#F9FAFB] border border-[#EAECF0] rounded-xl px-4 py-2.5 pr-10 text-[13px] font-black text-[#1D1F24] outline-none cursor-pointer">
                         <option>10</option>
                       </select>
                       <ChevronDown size={14} className="absolute right-3 top-1/2 -translate-y-1/2 text-[#999] pointer-events-none" />
                     </div>
                   </div>
-                  <div className="flex items-center gap-4">
-                    <span className="text-[13px] font-medium text-[#666]">1-4 from 4</span>
-                    <div className="flex items-center gap-2">
-                       <button className="w-8 h-8 rounded-lg flex items-center justify-center text-[#CCC]"><ChevronLeft size={18} /></button>
-                       <button className="w-8 h-8 rounded-lg flex items-center justify-center text-[#CCC]"><ChevronRight size={18} /></button>
+                  <div className="flex items-center gap-8">
+                    <span className="text-[13px] font-black text-[#1D1F24]">1-4 from 4</span>
+                    <div className="flex items-center gap-4">
+                       <button className="text-[#CCC]"><ChevronFirst size={20} /></button>
+                       <button className="text-[#CCC]"><ChevronLeft size={20} /></button>
+                       <button className="text-[#CCC]"><ChevronRight size={20} /></button>
+                       <button className="text-[#CCC]"><ChevronLast size={20} /></button>
                     </div>
                   </div>
                </div>
@@ -121,6 +149,18 @@ export default function SuperAdminClients() {
 
           </div>
         </main>
+
+        <EditStatusModal 
+          isOpen={isStatusModalOpen}
+          onClose={() => setIsStatusModalOpen(false)}
+          currentStatus={selectedClient?.adminStatus || ""}
+          options={["approved", "pending", "rejected"]}
+          onUpdate={(newStatus) => {
+            console.log("Updating client admin status:", selectedClient?.id, newStatus);
+          }}
+          title="Edit Status"
+          label="Status"
+        />
       </div>
     </div>
   );

@@ -5,6 +5,8 @@ import Link from "next/link";
 import Sidebar from "../../Sidebar/Sidebar";
 import Header from "../../header";
 import { UploadCloud, Plus, Minus, CheckCircle, X } from "lucide-react";
+import { useCreateEnquiry } from "@/hooks/useEnquiries";
+import { useAuthStore } from "@/store/authStore";
 
 const categories = ["Services", "Products", "Rental", "Manpower"];
 const subCategories = ["Slickline", "Drilling", "Pipeline", "Maintenance", "Equipment", "Consultancy"];
@@ -26,9 +28,28 @@ export default function UploadEnquiryPage() {
     if (file) setUploadedFile(file);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const user = useAuthStore((state) => state.user);
+  const createEnquiry = useCreateEnquiry();
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setSubmitted(true);
+    const formData = new FormData(e.currentTarget);
+    
+    createEnquiry.mutate({
+      title: formData.get("title") as string,
+      category: formData.get("category") as string,
+      subCategory: formData.get("subCategory") as string,
+      requiredDate: formData.get("requiredDate") as string,
+      purpose: formData.get("purpose") as string,
+      standard: formData.get("standard") as string,
+      quantity,
+      createdByUserId: user?.id,
+      createdByUserName: user?.name,
+    }, {
+      onSuccess: () => {
+        setSubmitted(true);
+      }
+    });
   };
 
   return (

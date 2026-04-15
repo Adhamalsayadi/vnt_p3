@@ -6,6 +6,7 @@ import {
   toggleEnquiryVisibility,
   updateEnquiryById,
   UpdateEnquiryPayload,
+  createEnquiry,
 } from "@/lib/api/enquiries/enquiries";
 
 export function useEnquiries(params: FetchEnquiriesParams) {
@@ -44,6 +45,14 @@ export function useToggleEnquiryVisibility() {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (id: string) => toggleEnquiryVisibility(id),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["enquiries"] }),
+  });
+}
+
+export function useCreateEnquiry() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (payload: any) => createEnquiry(payload),
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ["enquiries"] }),
   });
 }

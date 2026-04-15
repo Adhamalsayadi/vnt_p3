@@ -14,12 +14,9 @@ import {
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 
-const mockEnquiries = [
-  { id: 1, category: "Services", sub: "Services", type: "normal", date: "2024-03-01", unit: "ea", qty: 214, vtm: "approved", admin: "approved", offers: "true", status: "active" },
-  { id: 2, category: "Products", sub: "sub of products", type: "normal", date: "2024-03-29", unit: "hr", qty: 200, vtm: "approved", admin: "pending", offers: "false", status: "pending" },
-  { id: 3, category: "Services", sub: "sub for services", type: "moderate", date: "2024-04-05", unit: "hr", qty: 40000, vtm: "pending", admin: "pending", offers: "true", status: "active" },
-  { id: 4, category: "Products", sub: "sub of products", type: "normal", date: "2024-03-29", unit: "hr", qty: 200, vtm: "approved", admin: "approved", offers: "true", status: "active" },
-];
+import EditStatusModal from "@/components/shared/EditStatusModal";
+import { useEnquiries, useUpdateEnquiry } from "@/hooks/useEnquiries";
+import { Enquiry } from "@/types/enquiries";
 
 function StatusPill({ status }: { status: string }) {
   const s = status.toLowerCase();
@@ -43,6 +40,22 @@ function StatusPill({ status }: { status: string }) {
 }
 
 export default function VtmEnquiries() {
+  const [isStatusModalOpen, setIsStatusModalOpen] = useState(false);
+  const [selectedEnquiry, setSelectedEnquiry] = useState<Enquiry | null>(null);
+  
+  const { data: enquiries = [], isLoading } = useEnquiries({
+    page: 1,
+    pageSize: 100,
+    includeHidden: true,
+  });
+
+  const updateEnquiry = useUpdateEnquiry();
+
+  const handleEditStatus = (enq: Enquiry) => {
+    setSelectedEnquiry(enq);
+    setIsStatusModalOpen(true);
+  };
+  
   return (
     <div className="flex min-h-screen bg-[#F5F5F5]">
       <AdminSidebar role="SubAdmin" />
@@ -79,27 +92,33 @@ export default function VtmEnquiries() {
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-[#F2F4F7]">
-                      {mockEnquiries.map((enq, idx) => (
-                        <tr key={idx} className="hover:bg-[#F9FAFB] transition-colors group">
-                          <td className="px-6 py-6 text-sm text-[#333] font-medium">{enq.category}</td>
-                          <td className="px-6 py-6 text-sm text-[#333] font-medium">{enq.sub}</td>
-                          <td className="px-6 py-6 whitespace-nowrap"><StatusPill status={enq.type} /></td>
-                          <td className="px-6 py-6 text-sm text-[#333] font-medium whitespace-nowrap">{enq.date}</td>
-                          <td className="px-6 py-6 text-sm text-[#333] font-medium uppercase">{enq.unit}</td>
-                          <td className="px-6 py-6 text-sm text-[#333] font-medium">{enq.qty}</td>
-                          <td className="px-6 py-6"><StatusPill status={enq.vtm} /></td>
-                          <td className="px-6 py-6"><StatusPill status={enq.admin} /></td>
-                          <td className="px-6 py-6"><StatusPill status={enq.offers} /></td>
-                          <td className="px-6 py-6"><StatusPill status={enq.status} /></td>
-                          <td className="px-6 py-6 text-right">
-                             <div className="flex items-center justify-end gap-3 text-[#999]">
-                               <button className="hover:text-[#333] transition-colors"><Eye size={18} /></button>
-                               <button className="hover:text-[#333] transition-colors"><Package size={18} /></button>
-                               <button className="hover:text-[#333] transition-colors"><RefreshCcw size={16} /></button>
-                             </div>
-                          </td>
+                      {isLoading ? (
+                        <tr>
+                           <td colSpan={11} className="px-6 py-8 text-center text-sm text-[#999]">Loading enquiries...</td>
                         </tr>
-                      ))}
+                      ) : (
+                        enquiries.map((enq) => (
+                          <tr key={enq.id} className="hover:bg-[#F9FAFB] transition-colors group">
+                            <td className="px-6 py-6 text-sm text-[#333] font-medium">{enq.categoryLabel || enq.category}</td>
+                            <td className="px-6 py-6 text-sm text-[#333] font-medium">{enq.subCategoryLabel || enq.subCategory}</td>
+                            <td className="px-6 py-6 whitespace-nowrap"><StatusPill status={enq.requestType} /></td>
+                            <td className="px-6 py-6 text-sm text-[#333] font-medium whitespace-nowrap">{enq.requiredDate}</td>
+                            <td className="px-6 py-6 text-sm text-[#333] font-medium uppercase">-</td>
+                            <td className="px-6 py-6 text-sm text-[#333] font-medium">{enq.quantity}</td>
+                            <td className="px-6 py-6"><StatusPill status={enq.vtmStatus} /></td>
+                            <td className="px-6 py-6"><StatusPill status={enq.adminStatus} /></td>
+                            <td className="px-6 py-6"><StatusPill status={enq.offersReceived ? "true" : "false"} /></td>
+                            <td className="px-6 py-6"><StatusPill status={enq.enquiryStatus} /></td>
+                            <td className="px-6 py-6 text-right">
+                               <div className="flex items-center justify-end gap-3 text-[#999]">
+                                 <button className="hover:text-[#333] transition-colors"><Eye size={18} /></button>
+                                 <button className="hover:text-[#333] transition-colors"><Package size={18} /></button>
+                                 <button onClick={() => handleEditStatus(enq)} className="hover:text-primary transition-colors"><RefreshCcw size={16} /></button>
+                               </div>
+                            </td>
+                          </tr>
+                        ))
+                      )}
                     </tbody>
                   </table>
                </div>
@@ -126,6 +145,23 @@ export default function VtmEnquiries() {
 
           </div>
         </main>
+        
+        <EditStatusModal 
+          isOpen={isStatusModalOpen}
+          onClose={() => setIsStatusModalOpen(false)}
+          currentStatus={selectedEnquiry?.vtmStatus || "pending"}
+          options={["approved", "pending", "rejected"]}
+          onUpdate={(newStatus) => {
+            if (selectedEnquiry) {
+              updateEnquiry.mutate({
+                id: selectedEnquiry.id,
+                payload: { vtmStatus: newStatus },
+              });
+            }
+          }}
+          title="Update VTM Status"
+          label="VTM Status"
+        />
       </div>
     </div>
   );

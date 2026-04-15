@@ -3,15 +3,20 @@ import { useState } from "react";
 import AdminSidebar from "@/components/shared/AdminSidebar";
 import AdminHeader from "@/components/shared/AdminHeader";
 import { 
-  ChevronRight,
-  ChevronLeft,
-  ChevronDown,
-  Plus,
-  Pencil
+  Plus, 
+  ChevronRight, 
+  ChevronLeft, 
+  ChevronDown, 
+  Pencil,
+  Trash2,
+  ChevronFirst,
+  ChevronLast
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import Image from "next/image";
+import { ConfirmationModal } from "@/components/shared/Modals";
+import { useRouter } from "next/navigation";
 
 const mockCountries = [
   { id: 1, name: "Kingdom Of Saudi Arabia", code: "KSA", flag: "/Saudi_flag.png", active: true },
@@ -19,6 +24,15 @@ const mockCountries = [
 ];
 
 export default function SuperAdminCountries() {
+  const router = useRouter();
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [selectedCountry, setSelectedCountry] = useState<any>(null);
+
+  const handleDeleteClick = (country: any) => {
+    setSelectedCountry(country);
+    setIsDeleteModalOpen(true);
+  };
+
   return (
     <div className="flex min-h-screen bg-[#F5F5F5]">
       <AdminSidebar role="SuperAdmin" />
@@ -28,21 +42,24 @@ export default function SuperAdminCountries() {
         <main className="flex-1 p-8 overflow-auto">
           <div className="max-w-[1400px] mx-auto space-y-6">
             
-            <div className="flex items-center gap-2 text-[13px] font-medium text-[#999] mb-8">
+            <div className="flex items-center gap-2 text-[13px] font-bold text-[#999] mb-8">
               <Link href="/super-admin" className="hover:text-[#333]">Dashboard</Link>
               <ChevronRight size={14} />
               <span className="text-[#333]">countries</span>
             </div>
 
             <div className="flex items-center justify-between mb-8">
-               <h1 className="text-2xl font-bold text-[#333]">countries</h1>
-               <button className="bg-[#121111] text-white px-6 py-3 rounded-lg text-sm font-black uppercase tracking-widest flex items-center gap-2 hover:bg-black transition-all shadow-sm">
+               <h1 className="text-2xl font-bold text-[#333] lowercase">countries</h1>
+               <Link 
+                 href="/super-admin/countries/create"
+                 className="bg-[#121111] text-white px-8 py-4 rounded-xl text-sm font-black uppercase tracking-widest flex items-center gap-2 hover:bg-black transition-all shadow-md"
+               >
                   <Plus size={18} />
                   CREATE NEW COUNTRY
-               </button>
+               </Link>
             </div>
 
-            <div className="bg-white rounded-[20px] shadow-sm border border-[#F2F4F7] overflow-hidden">
+            <div className="bg-white rounded-[32px] shadow-sm border border-[#F2F4F7] overflow-hidden">
                <div className="overflow-x-auto">
                   <table className="w-full text-left border-collapse">
                     <thead>
@@ -59,24 +76,37 @@ export default function SuperAdminCountries() {
                       {mockCountries.map((c) => (
                         <tr key={c.id} className="hover:bg-[#F9FAFB] transition-colors group">
                           <td className="px-8 py-6 text-sm font-medium text-[#333]">{c.id}</td>
-                          <td className="px-8 py-6 font-bold text-sm text-[#333]">{c.name}</td>
-                          <td className="px-8 py-6 text-sm font-medium text-[#666]">{c.code}</td>
+                          <td className="px-8 py-6 font-bold text-sm text-[#1D1F24]">{c.name}</td>
+                          <td className="px-8 py-6 text-sm font-bold text-[#666]">{c.code}</td>
                           <td className="px-8 py-6">
                              {c.flag ? (
-                               <div className="w-10 h-6 relative rounded overflow-hidden shadow-sm">
+                               <div className="w-12 h-8 relative rounded overflow-hidden shadow-sm border border-[#EAECF0]">
                                  <Image src={c.flag} alt="flag" fill className="object-cover" />
                                </div>
                              ) : (
-                               <div className="w-10 h-6 bg-[#F2F4F7] rounded"></div>
+                               <div className="w-12 h-8 bg-[#F9FAFB] border border-[#EAECF0] rounded"></div>
                              )}
                           </td>
                           <td className="px-8 py-6">
-                             <span className="bg-[#E9F8F1] text-[#27B973] px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider">
+                             <span className="bg-[#E9F8F1] text-[#27B973] px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider">
                                active
                              </span>
                           </td>
                           <td className="px-8 py-6 text-right">
-                             <button className="text-[#999] hover:text-[#333] transition-colors"><Pencil size={18} /></button>
+                             <div className="flex items-center justify-end gap-3 text-[#999]">
+                               <Link 
+                                 href={`/super-admin/countries/${c.id}/edit`}
+                                 className="hover:text-[#333] transition-colors"
+                               >
+                                 <Pencil size={18} />
+                               </Link>
+                               <button 
+                                 onClick={() => handleDeleteClick(c)}
+                                 className="hover:text-red-600 transition-colors"
+                               >
+                                 <Trash2 size={18} />
+                               </button>
+                             </div>
                           </td>
                         </tr>
                       ))}
@@ -84,22 +114,24 @@ export default function SuperAdminCountries() {
                   </table>
                </div>
 
-               {/* Pagination UI */}
-               <div className="p-6 border-t border-[#F2F4F7] flex flex-col md:flex-row items-center justify-between gap-4">
-                  <div className="flex items-center gap-3">
-                    <span className="text-[13px] font-medium text-[#666]">items per page</span>
+               {/* Pagination */}
+               <div className="p-10 flex items-center justify-between border-t border-[#F2F4F7]">
+                  <div className="flex items-center gap-4">
+                    <span className="text-[13px] font-bold text-[#666]">items per page</span>
                     <div className="relative group">
-                      <select className="appearance-none bg-[#F9FAFB] border border-[#EAECF0] rounded-lg px-4 py-2 pr-10 text-[13px] font-bold text-[#1D1F24] outline-none cursor-pointer">
+                      <select className="appearance-none bg-[#F9FAFB] border border-[#EAECF0] rounded-xl px-4 py-2.5 pr-10 text-[13px] font-black text-[#1D1F24] outline-none cursor-pointer">
                         <option>10</option>
                       </select>
                       <ChevronDown size={14} className="absolute right-3 top-1/2 -translate-y-1/2 text-[#999] pointer-events-none" />
                     </div>
                   </div>
-                  <div className="flex items-center gap-4">
-                    <span className="text-[13px] font-medium text-[#666]">1-2 from 2</span>
-                    <div className="flex items-center gap-2">
-                       <button className="w-8 h-8 rounded-lg flex items-center justify-center text-[#CCC]"><ChevronLeft size={18} /></button>
-                       <button className="w-8 h-8 rounded-lg flex items-center justify-center text-[#CCC]"><ChevronRight size={18} /></button>
+                  <div className="flex items-center gap-8">
+                    <span className="text-[13px] font-black text-[#1D1F24]">1-2 from {mockCountries.length}</span>
+                    <div className="flex items-center gap-4">
+                       <button className="text-[#CCC]"><ChevronFirst size={20} /></button>
+                       <button className="text-[#CCC]"><ChevronLeft size={20} /></button>
+                       <button className="text-[#CCC]"><ChevronRight size={20} /></button>
+                       <button className="text-[#CCC]"><ChevronLast size={20} /></button>
                     </div>
                   </div>
                </div>
@@ -107,6 +139,17 @@ export default function SuperAdminCountries() {
 
           </div>
         </main>
+
+        <ConfirmationModal 
+          isOpen={isDeleteModalOpen}
+          onClose={() => setIsDeleteModalOpen(false)}
+          onConfirm={() => {
+            console.log("Deleting country:", selectedCountry?.id);
+            setIsDeleteModalOpen(false);
+          }}
+          title="Delete Country"
+          message={`Are you sure you want to delete ${selectedCountry?.name}?`}
+        />
       </div>
     </div>
   );

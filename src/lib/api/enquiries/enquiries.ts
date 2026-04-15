@@ -278,6 +278,9 @@ const mockEnquiries: Enquiry[] = [
   createdByUserId: index % 2 === 0 ? "1" : "2",
   createdByUserName: index % 2 === 0 ? "m" : "Demo Client",
   isHidden: false,
+  // Randomize mock status for the test data for UI verification
+  vtmStatus: index % 3 === 0 ? "pending" : "approved",
+  adminStatus: index % 4 === 0 ? "pending" : "approved",
 }));
 
 let mockEnquiriesStore: Enquiry[] = [...mockEnquiries];
@@ -452,6 +455,52 @@ export interface UpdateEnquiryPayload {
   enquiryEta?: string;
   standard?: string;
   image?: string;
+  vtmStatus?: string;
+  adminStatus?: string;
+}
+
+export async function createEnquiry(payload: Partial<Enquiry>): Promise<Enquiry> {
+  if (Python_ap) {
+    try {
+      const { data } = await api.post("/api/v1/enquiries", payload);
+      return data?.item || data?.data || data;
+    } catch (error) {
+       console.error("Axios Create Enquiry Error:", error);
+       throw error;
+    }
+  }
+
+  await new Promise((resolve) => setTimeout(resolve, 600));
+  const newEnquiry: Enquiry = {
+    id: `enq-${Date.now()}`,
+    title: payload.title || "Untitled Enquiry",
+    category: payload.category || "",
+    categoryLabel: payload.categoryLabel || payload.category || "",
+    subCategory: payload.subCategory || "",
+    subCategoryLabel: payload.subCategoryLabel || payload.subCategory || "",
+    sellerId: "",
+    sellerName: "",
+    time: "just now",
+    clientRate: 0,
+    vtRate: 0,
+    image: payload.image || "/enquiries.png",
+    requiredDate: payload.requiredDate || new Date().toISOString().split("T")[0],
+    requestType: payload.requestType || "Normal",
+    enquiryStatus: "Pending", // Starts out pending until both admins approve
+    vtmStatus: "pending",
+    adminStatus: "pending",
+    quantity: payload.quantity || 1,
+    purpose: payload.purpose || "",
+    enquiryEta: payload.enquiryEta || "TBD",
+    standard: payload.standard || "STANDARD",
+    offersReceived: false,
+    isHidden: false,
+    createdByUserId: payload.createdByUserId || "1",
+    createdByUserName: payload.createdByUserName || "Current User",
+  };
+
+  mockEnquiriesStore = [newEnquiry, ...mockEnquiriesStore];
+  return newEnquiry;
 }
 
 export async function fetchEnquiries(
@@ -553,10 +602,21 @@ export async function updateEnquiryById(
   const updated: Enquiry = {
     ...current,
     ...payload,
+    vtmStatus: payload.vtmStatus ?? current.vtmStatus,
+    adminStatus: payload.adminStatus ?? current.adminStatus,
     enquiryStatus: payload.enquiryStatus ?? current.enquiryStatus,
     quantity: payload.quantity ?? current.quantity,
     title: payload.title ?? current.title,
   };
+
+  // Approval Pipeline Logic
+  if (updated.vtmStatus === "approved" && updated.adminStatus === "approved") {
+    updated.enquiryStatus = "Accepted"; // Or Active depending on UI preference, using Accepted
+  } else if (updated.vtmStatus === "rejected" || updated.adminStatus === "rejected") {
+    updated.enquiryStatus = "Rejected";
+  } else {
+    updated.enquiryStatus = "Pending";
+  }
 
   mockEnquiriesStore[index] = updated;
   return updated;

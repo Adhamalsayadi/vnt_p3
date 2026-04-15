@@ -14,118 +14,155 @@ import {
   MapPin
 } from "lucide-react";
 
+import { 
+  User, 
+  ShieldCheck,
+  ChevronRight,
+  Camera,
+  Lock,
+  ArrowLeft,
+  Mail,
+  Phone,
+  MapPin,
+  Save
+} from "lucide-react";
+import { cn } from "@/lib/utils";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+
 export default function SubAdminProfile() {
-  const [isEditing, setIsEditing] = useState(false);
+  const [activeTab, setActiveTab] = useState("basic");
+  const router = useRouter();
 
   return (
-    <div className="flex min-h-screen bg-[#F9FAFB]">
+    <div className="flex min-h-screen bg-[#F5F5F5]">
       <AdminSidebar role="SubAdmin" />
-      <div className="flex-1 flex flex-col">
+      <div className="flex-1 flex flex-col min-w-0 font-sans">
         <AdminHeader role="SubAdmin" />
 
-        <main className="flex-1 p-6 md:p-10 overflow-auto">
-          <div className="max-w-4xl mx-auto space-y-8">
-            <div className="flex flex-col gap-2">
-              <div className="flex items-center gap-2 text-[10px] font-black text-[#98A2B3] uppercase tracking-[3px]">
-                <span className="text-[#101828]">VTM Admin</span>
-                <ChevronRight size={12} />
-                <span className="text-[#101828]">Personal Profile</span>
-              </div>
-              <h1 className="text-3xl font-black text-[#101828]">My Account</h1>
+        <main className="flex-1 p-8 overflow-auto">
+          <div className="max-w-[1200px] mx-auto">
+            
+            <div className="flex items-center gap-2 text-[13px] font-bold text-[#999] mb-8">
+              <Link href="/sub-admin" className="hover:text-[#333]">Dashboard</Link>
+              <ChevronRight size={14} />
+              <span className="text-[#333]">Account management</span>
             </div>
 
-            <div className="bg-white rounded-[40px] border border-[#EAECF0] shadow-sm overflow-hidden">
-               <div className="h-32 bg-[#F2F4F7] relative">
-                  <div className="absolute top-0 right-0 p-8 bg-primary/20 rounded-bl-[40px]">
-                     <ShieldCheck size={24} className="text-[#101828]" />
-                  </div>
-                  <div className="absolute -bottom-12 left-10">
-                     <div className="relative group">
-                        <div className="w-24 h-24 rounded-3xl bg-[#101828] flex items-center justify-center text-primary font-black text-3xl border-4 border-white shadow-xl overflow-hidden">
-                           V
-                        </div>
-                        <button className="absolute inset-0 bg-black/40 text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity rounded-3xl">
-                           <Camera size={20} />
-                        </button>
-                     </div>
-                  </div>
-               </div>
+            <h1 className="text-[28px] font-black text-[#1D1F24] mb-10 tracking-tight lowercase">Account management</h1>
 
-               <div className="pt-20 px-10 pb-10">
-                  <div className="flex justify-between items-start mb-10">
-                     <div>
-                        <h2 className="text-2xl font-black text-[#101828]">Compliance Controller</h2>
-                        <p className="text-[#667085] font-medium italic">Regional Operations (Middle East)</p>
-                     </div>
-                     <button 
-                        onClick={() => setIsEditing(!isEditing)}
-                        className="px-6 py-2.5 bg-white border border-[#EAECF0] rounded-xl text-sm font-black uppercase tracking-widest text-[#101828] hover:bg-black hover:text-white transition-all shadow-sm"
-                     >
-                        {isEditing ? "Cancel Edit" : "Modify Details"}
-                     </button>
-                  </div>
+            <div className="flex flex-col lg:flex-row gap-12">
+               {/* Left Navigation Sidebar inside page */}
+               <aside className="w-full lg:w-72 shrink-0 space-y-3">
+                  <button 
+                    onClick={() => setActiveTab("basic")}
+                    className={cn(
+                      "w-full flex items-center gap-4 px-6 py-5 rounded-2xl text-[14px] font-black transition-all border-2 lowercase tracking-tight",
+                      activeTab === "basic" 
+                        ? "bg-white text-[#1D1F24] shadow-md border-transparent ring-1 ring-black/5" 
+                        : "text-[#999] hover:text-[#333] border-transparent"
+                    )}
+                  >
+                    <User size={20} className={activeTab === "basic" ? "text-[#1D1F24]" : "text-[#999]"} />
+                    <span>Basic info</span>
+                  </button>
+                  <button 
+                    onClick={() => setActiveTab("security")}
+                    className={cn(
+                      "w-full flex items-center gap-4 px-6 py-5 rounded-2xl text-[14px] font-black transition-all border-2 lowercase tracking-tight",
+                      activeTab === "security" 
+                        ? "bg-white text-[#1D1F24] shadow-md border-transparent ring-1 ring-black/5" 
+                        : "text-[#999] hover:text-[#333] border-transparent"
+                    )}
+                  >
+                    <Lock size={20} className={activeTab === "security" ? "text-[#1D1F24]" : "text-[#999]"} />
+                    <span>change password</span>
+                  </button>
+               </aside>
 
-                  <form className="grid grid-cols-1 md:grid-cols-2 gap-8" onSubmit={(e) => e.preventDefault()}>
-                     <div className="space-y-4">
-                        <label className="block text-[10px] font-black text-[#667085] uppercase tracking-widest ml-1">Full Name</label>
-                        <div className="relative">
-                           <User className="absolute left-4 top-1/2 -translate-y-1/2 text-[#98A2B3]" size={18} />
-                           <input 
-                              type="text" 
-                              defaultValue="Abdullah Controller" 
-                              disabled={!isEditing}
-                              className="w-full pl-12 pr-5 py-4 bg-[#F9FAFB] border border-[#EAECF0] rounded-2xl outline-none focus:ring-2 focus:ring-primary/20 text-sm font-bold transition-all disabled:opacity-60" 
-                           />
-                        </div>
-                     </div>
+               {/* Right Content Area */}
+               <div className="flex-1">
+                  {activeTab === "basic" ? (
+                    <div className="bg-white rounded-[40px] shadow-sm border border-[#EAECF0] p-12 animate-in fade-in slide-in-from-bottom-4 duration-500">
+                       <div className="flex flex-col items-center mb-16">
+                          <div className="relative group">
+                             <div className="w-40 h-40 rounded-full bg-[#1D1F24] flex items-center justify-center text-white text-[56px] font-black border-[6px] border-[#F9FAFB] overflow-hidden shadow-inner ring-1 ring-black/5">
+                                V
+                             </div>
+                             <button className="absolute bottom-2 right-2 bg-white p-3 rounded-full shadow-xl border border-[#EAECF0] text-[#1D1F24] hover:bg-[#F9FAFB] hover:scale-110 transition-all z-10">
+                                <Camera size={20} />
+                             </button>
+                             <div className="absolute inset-0 rounded-full bg-black/0 group-hover:bg-black/10 transition-all cursor-pointer ring-inset ring-1 ring-black/5" />
+                          </div>
+                          <h2 className="mt-6 text-[18px] font-black text-[#1D1F24] lowercase">Compliance Controller</h2>
+                          <p className="text-[13px] font-medium text-[#999] lowercase">Regional Operations (Middle East)</p>
+                       </div>
 
-                     <div className="space-y-4">
-                        <label className="block text-[10px] font-black text-[#667085] uppercase tracking-widest ml-1">Work Email</label>
-                        <div className="relative">
-                           <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-[#98A2B3]" size={18} />
-                           <input 
-                              type="email" 
-                              defaultValue="vtm.support@vnt.com" 
-                              disabled={!isEditing}
-                              className="w-full pl-12 pr-5 py-4 bg-[#F9FAFB] border border-[#EAECF0] rounded-2xl outline-none focus:ring-2 focus:ring-primary/20 text-sm font-bold transition-all disabled:opacity-60" 
-                           />
-                        </div>
-                     </div>
+                       <form className="space-y-10 max-w-4xl mx-auto">
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-10">
+                             {/* User name */}
+                             <div className="space-y-2.5">
+                                <label className="text-[14px] font-black text-[#1D1F24] lowercase tracking-tight ml-1">FULL NAME</label>
+                                <input type="text" defaultValue="Abdullah Controller" className="w-full h-14 bg-[#F9FAFB] border border-[#EAECF0] rounded-2xl px-6 text-sm font-bold text-[#1D1F24] outline-none focus:ring-2 focus:ring-[#1D1F24]/5 focus:border-[#1D1F24] transition-all" />
+                             </div>
+                             {/* Email */}
+                             <div className="space-y-2.5">
+                                <label className="text-[14px] font-black text-[#1D1F24] lowercase tracking-tight ml-1">WORK EMAIL</label>
+                                <input type="email" defaultValue="vtm.support@vnt.com" className="w-full h-14 bg-[#F9FAFB] border border-[#EAECF0] rounded-2xl px-6 text-sm font-bold text-[#1D1F24] outline-none focus:ring-2 focus:ring-[#1D1F24]/5 focus:border-[#1D1F24] transition-all" />
+                             </div>
+                             {/* Region */}
+                             <div className="space-y-2.5">
+                                <label className="text-[14px] font-black text-[#1D1F24] lowercase tracking-tight ml-1">REGION ASSIGNMENT</label>
+                                <input type="text" defaultValue="Middle East (KSA/UAE)" disabled className="w-full h-14 bg-[#F9FAFB] border border-[#EAECF0] rounded-2xl px-6 text-sm font-bold text-[#1D1F24] opacity-60" />
+                             </div>
+                             {/* Staff ID */}
+                             <div className="space-y-2.5">
+                                <label className="text-[14px] font-black text-[#1D1F24] lowercase tracking-tight ml-1">STAFF ID</label>
+                                <div className="w-full h-14 bg-[#F9FAFB] border border-[#EAECF0] rounded-2xl px-6 flex items-center text-sm font-black text-[#1D1F24] uppercase tracking-widest">
+                                   VTM-2026-X842
+                                </div>
+                             </div>
+                          </div>
 
-                     <div className="space-y-4">
-                        <label className="block text-[10px] font-black text-[#667085] uppercase tracking-widest ml-1">Region Assignment</label>
-                        <div className="relative">
-                           <MapPin className="absolute left-4 top-1/2 -translate-y-1/2 text-[#98A2B3]" size={18} />
-                           <input 
-                              type="text" 
-                              defaultValue="Middle East (KSA/UAE)" 
-                              disabled={true}
-                              className="w-full pl-12 pr-5 py-4 bg-[#F9FAFB] border border-[#EAECF0] rounded-2xl text-sm font-bold opacity-60" 
-                           />
-                        </div>
-                     </div>
+                          <div className="flex justify-end pt-10 border-t border-[#F2F4F7]">
+                             <button type="submit" className="bg-[#121111] text-white px-12 py-5 rounded-2xl font-black text-sm uppercase tracking-widest hover:bg-black transition-all shadow-xl hover:shadow-black/10 active:scale-[0.98]">
+                               Save changes
+                             </button>
+                          </div>
+                       </form>
+                    </div>
+                  ) : (
+                    <div className="bg-white rounded-[40px] shadow-sm border border-[#EAECF0] p-12 animate-in fade-in slide-in-from-bottom-4 duration-500">
+                       <div className="mb-12">
+                          <h2 className="text-[20px] font-black text-[#1D1F24] lowercase tracking-tight">change password</h2>
+                          <p className="text-[13px] font-medium text-[#999] lowercase mt-1">Update your account security credentials</p>
+                       </div>
 
-                     <div className="space-y-4">
-                        <label className="block text-[10px] font-black text-[#667085] uppercase tracking-widest ml-1">Staff ID</label>
-                        <div className="relative">
-                           <ShieldCheck className="absolute left-4 top-1/2 -translate-y-1/2 text-primary" size={18} />
-                           <div className="w-full pl-12 pr-5 py-4 bg-[#F9FAFB] border border-[#EAECF0] rounded-2xl text-sm font-black text-[#101828] uppercase tracking-widest">
-                              VTM-2026-X842
-                           </div>
-                        </div>
-                     </div>
+                       <form className="space-y-10 max-w-2xl">
+                          <div className="space-y-2.5">
+                             <label className="text-[14px] font-black text-[#1D1F24] lowercase tracking-tight ml-1">Old Password</label>
+                             <input type="password" placeholder="••••••••" className="w-full h-14 bg-[#F9FAFB] border border-[#EAECF0] rounded-2xl px-6 text-sm font-bold text-[#1D1F24] outline-none focus:ring-2 focus:ring-[#1D1F24]/5 focus:border-[#1D1F24] transition-all placeholder:text-[#CCC]" />
+                          </div>
+                          <div className="space-y-2.5">
+                             <label className="text-[14px] font-black text-[#1D1F24] lowercase tracking-tight ml-1">New Password</label>
+                             <input type="password" placeholder="••••••••" className="w-full h-14 bg-[#F9FAFB] border border-[#EAECF0] rounded-2xl px-6 text-sm font-bold text-[#1D1F24] outline-none focus:ring-2 focus:ring-[#1D1F24]/5 focus:border-[#1D1F24] transition-all placeholder:text-[#CCC]" />
+                          </div>
+                          <div className="space-y-2.5">
+                             <label className="text-[14px] font-black text-[#1D1F24] lowercase tracking-tight ml-1">Repeat Password</label>
+                             <input type="password" placeholder="••••••••" className="w-full h-14 bg-[#F9FAFB] border border-[#EAECF0] rounded-2xl px-6 text-sm font-bold text-[#1D1F24] outline-none focus:ring-2 focus:ring-[#1D1F24]/5 focus:border-[#1D1F24] transition-all placeholder:text-[#CCC]" />
+                          </div>
 
-                     {isEditing && (
-                        <div className="md:col-span-2 pt-6">
-                           <button className="w-full py-5 bg-[#101828] text-white font-black uppercase tracking-[2px] text-sm rounded-2xl hover:bg-black transition-all shadow-xl flex items-center justify-center gap-3">
-                              <Save size={18} className="text-primary" />
-                              Save Profile Updates
-                           </button>
-                        </div>
-                     )}
-                  </form>
+                          <div className="flex justify-end pt-10 border-t border-[#F2F4F7]">
+                             <button type="submit" className="bg-[#121111] text-white px-12 py-5 rounded-2xl font-black text-sm uppercase tracking-widest hover:bg-black transition-all shadow-xl hover:shadow-black/10 active:scale-[0.98]">
+                               Save changes
+                             </button>
+                          </div>
+                       </form>
+                    </div>
+                  )}
                </div>
             </div>
+
           </div>
         </main>
       </div>

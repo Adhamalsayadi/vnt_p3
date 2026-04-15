@@ -23,6 +23,8 @@ export interface Enquiry {
   createdByUserName?: string;
   isHidden?: boolean;
   acceptedPrice?: number | null;
+  vtmStatus: string;
+  adminStatus: string;
 }
 
 export interface SellerRatingCriterion {

@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 import { Eye, EyeOff } from "lucide-react";
 import { loginUser } from "@/lib/api/auth/login";
 import { useAuthStore } from "@/store/authStore";
+import { setAuthCookie } from "@/actions/auth";
 
 export default function LoginPage() {
   const router = useRouter(); // 2. Initialize router
@@ -29,6 +30,9 @@ export default function LoginPage() {
       if (result.success && result.role && result.user) {
         // 3. Store user in global auth store
         setUser(result.user);
+
+        // Save auth cookie for middleware using mock token for now
+        await setAuthCookie(result.role, "mock-jwt-token");
 
         // 4. REDIRECT LOGIC BASED ON ROLE
         if (result.role === "Client") {

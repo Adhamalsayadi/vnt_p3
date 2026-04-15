@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 import { Eye, EyeOff } from "lucide-react";
 import { loginUser } from "@/lib/api/auth/login";
 import { useAuthStore } from "@/store/authStore";
+import { setAuthCookie } from "@/actions/auth";
 
 export default function AdminLoginPage() {
   const router = useRouter();
@@ -27,6 +28,7 @@ export default function AdminLoginPage() {
       const result = await loginUser(email, password);
       if (result.success && result.role && result.user) {
         setUser(result.user);
+        await setAuthCookie(result.role, "mock-jwt-token");
         if (result.role === "SuperAdmin") router.push("/super-admin");
         else if (result.role === "SubAdmin") router.push("/sub-admin");
         else router.push("/marketer");
@@ -42,7 +44,6 @@ export default function AdminLoginPage() {
 
   return (
     <main className="min-h-screen bg-[#F8F9FF] flex flex-col items-center justify-center p-6 select-none font-sans">
-      {/* Brand Logo & Name */}
       <div className="flex flex-col items-center mb-10">
         <Image src="/VT.png" alt="VT Logo" width={140} height={100} className="mb-4" priority />
         <h1 className="text-[32px] font-black tracking-tight text-[#1A1C1E]">
@@ -50,7 +51,6 @@ export default function AdminLoginPage() {
         </h1>
       </div>
 
-      {/* Login Card */}
       <div className="w-full max-w-[500px] bg-white rounded-[32px] shadow-[0_8px_30px_rgb(0,0,0,0.04)] p-12 border border-[#F2F4F7]">
         <div className="text-center mb-10">
           <h2 className="text-2xl font-black text-[#1A1C1E] mb-2 leading-none">Login</h2>
@@ -58,7 +58,6 @@ export default function AdminLoginPage() {
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-8">
-          {/* Email Input */}
           <div className="relative">
             <label className="absolute -top-2.5 left-4 bg-white px-1.5 text-[11px] font-bold text-[#98A2B3] uppercase tracking-widest z-10">
               Email
@@ -73,7 +72,6 @@ export default function AdminLoginPage() {
             />
           </div>
 
-          {/* Password Input */}
           <div className="relative">
             <label className="absolute -top-2.5 left-4 bg-white px-1.5 text-[11px] font-bold text-[#98A2B3] uppercase tracking-widest z-10">
               Password
