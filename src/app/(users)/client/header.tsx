@@ -18,6 +18,7 @@ import Button from "@/components/ui/button";
 import { NAV_LINKS } from "@/config/public";
 import { useAuthStore } from "@/store/authStore";
 import { removeAuthCookie } from "@/actions/auth";
+import { ConfirmationModal } from "@/components/shared/Modals";
 
 interface HeaderProps {
   role: "Client" | "Supplier" | "Marketer";
@@ -30,6 +31,7 @@ export default function Header({ role }: HeaderProps) {
   const setUser = useAuthStore((state) => state.setUser);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   const dashboardHref =
@@ -191,7 +193,7 @@ export default function Header({ role }: HeaderProps) {
                 <button
                   type="button"
                   className="flex w-full items-center gap-3 px-4 py-2.5 text-left text-sm font-semibold text-[#B42318] transition-colors hover:bg-red-50"
-                  onClick={handleSignOut}
+                  onClick={() => setIsLogoutModalOpen(true)}
                 >
                   <LogOut size={16} />
                   Sign out
@@ -258,7 +260,7 @@ export default function Header({ role }: HeaderProps) {
             <button
               type="button"
               className="rounded-lg px-3 py-2 text-left text-sm font-semibold text-[#B42318]"
-              onClick={handleSignOut}
+              onClick={() => setIsLogoutModalOpen(true)}
             >
               Sign out
             </button>
@@ -271,6 +273,16 @@ export default function Header({ role }: HeaderProps) {
           {pageTitle}
         </h1>
       </div>
+
+      <ConfirmationModal
+        isOpen={isLogoutModalOpen}
+        onClose={() => setIsLogoutModalOpen(false)}
+        onConfirm={handleSignOut}
+        title="Confirm logout"
+        message="Are you sure you want to log out?"
+        confirmText="Logout"
+        variant="primary"
+      />
     </header>
   );
 }

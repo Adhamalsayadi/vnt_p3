@@ -4,153 +4,183 @@ import { useState } from "react";
 import AdminSidebar from "@/components/shared/AdminSidebar";
 import AdminHeader from "@/components/shared/AdminHeader";
 import { 
-  User, 
-  ShieldCheck, 
-  ChevronRight, 
-  Camera, 
-  Lock, 
-  ArrowLeft 
+  Eye, 
+  Image as ImageIcon 
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 export default function AdminProfile() {
-  const [activeTab, setActiveTab] = useState("basic");
-  const router = useRouter();
+  const [activeTab, setActiveTab] = useState("user-info");
+  const [showPassword, setShowPassword] = useState(false);
 
   return (
-    <div className="flex min-h-screen bg-[#F5F5F5]">
+    <div className="flex min-h-screen bg-[#F9FAFB]">
       <AdminSidebar role="SuperAdmin" />
       <div className="flex-1 flex flex-col min-w-0 font-sans">
         <AdminHeader role="SuperAdmin" />
 
-        <main className="flex-1 p-8 overflow-auto">
-          <div className="max-w-[1200px] mx-auto">
+        <main className="flex-1 p-8">
+          <div className="max-w-[1400px] mx-auto bg-white rounded-[32px] border border-[#F2F4F7] shadow-sm min-h-[800px] flex flex-col">
             
-            <div className="flex items-center gap-2 text-[13px] font-bold text-[#999] mb-8">
-              <Link href="/super-admin" className="hover:text-[#333]">Dashboard</Link>
-              <ChevronRight size={14} />
-              <span className="text-[#333]">Account management</span>
+            {/* Horizontal Tabs */}
+            <div className="px-10 flex border-b border-[#F2F4F7]">
+               <button 
+                 onClick={() => setActiveTab("user-info")}
+                 className={cn(
+                   "py-8 text-[13px] font-black uppercase tracking-widest transition-all mr-10 border-b-4",
+                   activeTab === "user-info" 
+                     ? "text-[#121111] border-[#121111]" 
+                     : "text-[#999] border-transparent hover:text-[#333]"
+                 )}
+               >
+                 USER INFORMATION
+               </button>
+               <button 
+                 onClick={() => setActiveTab("change-password")}
+                 className={cn(
+                   "py-8 text-[13px] font-black uppercase tracking-widest transition-all border-b-4",
+                   activeTab === "change-password" 
+                     ? "text-[#121111] border-[#121111]" 
+                     : "text-[#999] border-transparent hover:text-[#333]"
+                 )}
+               >
+                 CHANGE PASSWORD
+               </button>
             </div>
 
-            <h1 className="text-[28px] font-black text-[#1D1F24] mb-10 tracking-tight lowercase">Account management</h1>
-
-            <div className="flex flex-col lg:flex-row gap-12">
-               {/* Left Navigation Sidebar inside page */}
-               <aside className="w-full lg:w-72 shrink-0 space-y-3">
-                  <button 
-                    onClick={() => setActiveTab("basic")}
-                    className={cn(
-                      "w-full flex items-center gap-4 px-6 py-5 rounded-2xl text-[14px] font-black transition-all border-2 lowercase tracking-tight",
-                      activeTab === "basic" 
-                        ? "bg-white text-[#1D1F24] shadow-md border-transparent ring-1 ring-black/5" 
-                        : "text-[#999] hover:text-[#333] border-transparent"
-                    )}
-                  >
-                    <User size={20} className={activeTab === "basic" ? "text-[#1D1F24]" : "text-[#999]"} />
-                    <span>Basic info</span>
-                  </button>
-                  <button 
-                    onClick={() => setActiveTab("security")}
-                    className={cn(
-                      "w-full flex items-center gap-4 px-6 py-5 rounded-2xl text-[14px] font-black transition-all border-2 lowercase tracking-tight",
-                      activeTab === "security" 
-                        ? "bg-white text-[#1D1F24] shadow-md border-transparent ring-1 ring-black/5" 
-                        : "text-[#999] hover:text-[#333] border-transparent"
-                    )}
-                  >
-                    <Lock size={20} className={activeTab === "security" ? "text-[#1D1F24]" : "text-[#999]"} />
-                    <span>change password</span>
-                  </button>
-               </aside>
-
-               {/* Right Content Area */}
-               <div className="flex-1">
-                  {activeTab === "basic" ? (
-                    <div className="bg-white rounded-[40px] shadow-sm border border-[#EAECF0] p-12 animate-in fade-in slide-in-from-bottom-4 duration-500">
-                       <div className="flex flex-col items-center mb-16">
+            <div className="flex-1 p-10 pt-16">
+               {activeTab === "user-info" ? (
+                 <div className="max-w-4xl space-y-12 animate-in fade-in slide-in-from-bottom-2 duration-300">
+                    <form className="space-y-10">
+                       <div className="space-y-8">
+                          {/* Unique Code */}
                           <div className="relative group">
-                             <div className="w-40 h-40 rounded-full bg-[#1D1F24] flex items-center justify-center text-white text-[56px] font-black border-[6px] border-[#F9FAFB] overflow-hidden shadow-inner ring-1 ring-black/5">
-                                A
-                             </div>
-                             <button className="absolute bottom-2 right-2 bg-white p-3 rounded-full shadow-xl border border-[#EAECF0] text-[#1D1F24] hover:bg-[#F9FAFB] hover:scale-110 transition-all z-10">
-                                <Camera size={20} />
-                             </button>
-                             <div className="absolute inset-0 rounded-full bg-black/0 group-hover:bg-black/10 transition-all cursor-pointer ring-inset ring-1 ring-black/5" />
+                            <label className="absolute -top-3 left-4 bg-white px-2 text-[11px] font-medium text-[#999] group-focus-within:text-[#121111] transition-all tracking-tight">unique code</label>
+                            <input 
+                              type="text" 
+                              defaultValue="KSA-ADM-24BRD20WQ" 
+                              readOnly
+                              className="w-full h-16 border border-[#EAECF0] rounded-xl px-6 text-[14px] font-medium text-[#333] bg-white outline-none cursor-default" 
+                            />
                           </div>
-                          <h2 className="mt-6 text-[18px] font-black text-[#1D1F24] lowercase">Super Admin</h2>
-                          <p className="text-[13px] font-medium text-[#999] lowercase">Manage your personal information</p>
+
+                          {/* Name */}
+                          <div className="relative group">
+                            <label className="absolute -top-3 left-4 bg-white px-2 text-[11px] font-medium text-[#999] group-focus-within:text-[#121111] transition-all tracking-tight">Name</label>
+                            <input 
+                              type="text" 
+                              defaultValue="Admin" 
+                              className="w-full h-16 border border-[#EAECF0] rounded-xl px-6 text-[14px] font-medium text-[#333] outline-none focus:border-[#121111] transition-all" 
+                            />
+                          </div>
+
+                          {/* Email */}
+                          <div className="relative group w-full md:w-2/3">
+                            <label className="absolute -top-3 left-4 bg-white px-2 text-[11px] font-medium text-[#999] group-focus-within:text-[#121111] transition-all tracking-tight">Email</label>
+                            <input 
+                              type="email" 
+                              defaultValue="super_admin@gmail.com" 
+                              className="w-full h-16 border border-[#EAECF0] rounded-xl px-6 text-[14px] font-medium text-[#333] outline-none focus:border-[#121111] transition-all" 
+                            />
+                          </div>
+
+                          {/* Image Field */}
+                          <div className="space-y-4">
+                             <label className="text-[14px] font-bold text-[#333] lowercase">Image</label>
+                             <div className="flex items-center gap-4">
+                                <div className="text-[#999] w-10 flex justify-center">
+                                   <ImageIcon size={22} />
+                                </div>
+                                <div className="flex-1 flex items-center border border-[#EAECF0] rounded-xl overflow-hidden h-16 bg-white">
+                                   <div className="flex-1 px-4"></div>
+                                   <button type="button" className="h-full px-6 border-l border-[#EAECF0] text-[13px] font-medium text-[#333] hover:bg-[#F9FAFB] transition-all">
+                                      browse
+                                   </button>
+                                </div>
+                             </div>
+                          </div>
                        </div>
 
-                       <form className="space-y-10 max-w-4xl mx-auto">
-                          <div className="grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-10">
-                             {/* User name */}
-                             <div className="space-y-2.5">
-                                <label className="text-[14px] font-black text-[#1D1F24] lowercase tracking-tight ml-1">USER NAME</label>
-                                <input type="text" defaultValue="admin" className="w-full h-14 bg-[#F9FAFB] border border-[#EAECF0] rounded-2xl px-6 text-sm font-bold text-[#1D1F24] outline-none focus:ring-2 focus:ring-[#1D1F24]/5 focus:border-[#1D1F24] transition-all placeholder:text-[#999]" />
-                             </div>
-                             {/* First name */}
-                             <div className="space-y-2.5">
-                                <label className="text-[14px] font-black text-[#1D1F24] lowercase tracking-tight ml-1">FIRST NAME</label>
-                                <input type="text" defaultValue="admin" className="w-full h-14 bg-[#F9FAFB] border border-[#EAECF0] rounded-2xl px-6 text-sm font-bold text-[#1D1F24] outline-none focus:ring-2 focus:ring-[#1D1F24]/5 focus:border-[#1D1F24] transition-all placeholder:text-[#999]" />
-                             </div>
-                             {/* Last name */}
-                             <div className="space-y-2.5">
-                                <label className="text-[14px] font-black text-[#1D1F24] lowercase tracking-tight ml-1">LAST NAME</label>
-                                <input type="text" defaultValue="admin" className="w-full h-14 bg-[#F9FAFB] border border-[#EAECF0] rounded-2xl px-6 text-sm font-bold text-[#1D1F24] outline-none focus:ring-2 focus:ring-[#1D1F24]/5 focus:border-[#1D1F24] transition-all placeholder:text-[#999]" />
-                             </div>
-                             {/* Email */}
-                             <div className="space-y-2.5">
-                                <label className="text-[14px] font-black text-[#1D1F24] lowercase tracking-tight ml-1">EMAIL ADDRESS</label>
-                                <input type="email" defaultValue="admin@vnt.com" className="w-full h-14 bg-[#F9FAFB] border border-[#EAECF0] rounded-2xl px-6 text-sm font-bold text-[#1D1F24] outline-none focus:ring-2 focus:ring-[#1D1F24]/5 focus:border-[#1D1F24] transition-all placeholder:text-[#999]" />
-                             </div>
-                             {/* Phone */}
-                             <div className="space-y-2.5">
-                                <label className="text-[14px] font-black text-[#1D1F24] lowercase tracking-tight ml-1">PHONE NUMBER</label>
-                                <input type="text" defaultValue="+966 50 000 0000" className="w-full h-14 bg-[#F9FAFB] border border-[#EAECF0] rounded-2xl px-6 text-sm font-bold text-[#1D1F24] outline-none focus:ring-2 focus:ring-[#1D1F24]/5 focus:border-[#1D1F24] transition-all placeholder:text-[#999]" />
-                             </div>
+                       {/* Profile Picture Display */}
+                       <div className="flex flex-col items-center py-10">
+                          <div className="w-32 h-32 rounded-full overflow-hidden shadow-2xl ring-4 ring-[#F9FAFB]">
+                              <Image 
+                                src="/super_admin/Drop list.png" // Using the cup from mockup if possible, or placeholder
+                                alt="Admin Avatar"
+                                width={128}
+                                height={128}
+                                className="object-cover w-full h-full"
+                              />
                           </div>
-
-                          <div className="flex justify-end pt-10 border-t border-[#F2F4F7]">
-                             <button type="submit" className="bg-[#121111] text-white px-12 py-5 rounded-2xl font-black text-sm uppercase tracking-widest hover:bg-black transition-all shadow-xl hover:shadow-black/10 active:scale-[0.98]">
-                               Save changes
-                             </button>
-                          </div>
-                       </form>
-                    </div>
-                  ) : (
-                    <div className="bg-white rounded-[40px] shadow-sm border border-[#EAECF0] p-12 animate-in fade-in slide-in-from-bottom-4 duration-500">
-                       <div className="mb-12">
-                          <h2 className="text-[20px] font-black text-[#1D1F24] lowercase tracking-tight">change password</h2>
-                          <p className="text-[13px] font-medium text-[#999] lowercase mt-1">Update your account security credentials</p>
                        </div>
 
-                       <form className="space-y-10 max-w-2xl">
-                          <div className="space-y-2.5">
-                             <label className="text-[14px] font-black text-[#1D1F24] lowercase tracking-tight ml-1">Old Password</label>
-                             <input type="password" placeholder="••••••••" className="w-full h-14 bg-[#F9FAFB] border border-[#EAECF0] rounded-2xl px-6 text-sm font-bold text-[#1D1F24] outline-none focus:ring-2 focus:ring-[#1D1F24]/5 focus:border-[#1D1F24] transition-all placeholder:text-[#CCC]" />
-                          </div>
-                          <div className="space-y-2.5">
-                             <label className="text-[14px] font-black text-[#1D1F24] lowercase tracking-tight ml-1">New Password</label>
-                             <input type="password" placeholder="••••••••" className="w-full h-14 bg-[#F9FAFB] border border-[#EAECF0] rounded-2xl px-6 text-sm font-bold text-[#1D1F24] outline-none focus:ring-2 focus:ring-[#1D1F24]/5 focus:border-[#1D1F24] transition-all placeholder:text-[#CCC]" />
-                          </div>
-                          <div className="space-y-2.5">
-                             <label className="text-[14px] font-black text-[#1D1F24] lowercase tracking-tight ml-1">Repeat Password</label>
-                             <input type="password" placeholder="••••••••" className="w-full h-14 bg-[#F9FAFB] border border-[#EAECF0] rounded-2xl px-6 text-sm font-bold text-[#1D1F24] outline-none focus:ring-2 focus:ring-[#1D1F24]/5 focus:border-[#1D1F24] transition-all placeholder:text-[#CCC]" />
+                       <div className="flex justify-end pt-10">
+                          <button type="submit" className="bg-[#121111] text-white px-10 py-4.5 rounded-xl font-black text-[14px] uppercase tracking-[0.1em] hover:bg-black transition-all shadow-xl hover:shadow-black/20">
+                             SAVE
+                          </button>
+                       </div>
+                    </form>
+                 </div>
+               ) : (
+                 <div className="max-w-4xl space-y-12 animate-in fade-in slide-in-from-bottom-2 duration-300">
+                    <form className="space-y-10">
+                       <div className="space-y-8">
+                          {/* Old Password */}
+                          <div className="relative group">
+                            <label className="absolute -top-3 left-4 bg-white px-2 text-[11px] font-medium text-[#999] group-focus-within:text-[#121111] transition-all tracking-tight">Old Password</label>
+                            <div className="relative">
+                               <input 
+                                 type={showPassword ? "text" : "password"}
+                                 placeholder="Old Password"
+                                 className="w-full h-16 border border-[#EAECF0] rounded-xl px-6 pr-14 text-[14px] font-medium text-[#333] outline-none focus:border-[#121111] transition-all placeholder:text-[#CCC]" 
+                               />
+                               <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-6 top-1/2 -translate-y-1/2 text-[#999] hover:text-[#333]">
+                                 <Eye size={20} />
+                               </button>
+                            </div>
                           </div>
 
-                          <div className="flex justify-end pt-10 border-t border-[#F2F4F7]">
-                             <button type="submit" className="bg-[#121111] text-white px-12 py-5 rounded-2xl font-black text-sm uppercase tracking-widest hover:bg-black transition-all shadow-xl hover:shadow-black/10 active:scale-[0.98]">
-                               Save changes
-                             </button>
+                          {/* New and Confirm Password Grid */}
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                             <div className="relative group">
+                                <label className="absolute -top-3 left-4 bg-white px-2 text-[11px] font-medium text-[#999] group-focus-within:text-[#121111] transition-all tracking-tight">New Password</label>
+                                <div className="relative">
+                                   <input 
+                                     type={showPassword ? "text" : "password"}
+                                     placeholder="New Password"
+                                     className="w-full h-16 border border-[#EAECF0] rounded-xl px-6 pr-14 text-[14px] font-medium text-[#333] outline-none focus:border-[#121111] transition-all placeholder:text-[#CCC]" 
+                                   />
+                                   <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-6 top-1/2 -translate-y-1/2 text-[#999] hover:text-[#333]">
+                                     <Eye size={20} />
+                                   </button>
+                                </div>
+                             </div>
+                             <div className="relative group">
+                                <label className="absolute -top-3 left-4 bg-white px-2 text-[11px] font-medium text-[#999] group-focus-within:text-[#121111] transition-all tracking-tight">Confirm Password</label>
+                                <div className="relative">
+                                   <input 
+                                     type={showPassword ? "text" : "password"}
+                                     placeholder="Confirm Password"
+                                     className="w-full h-16 border border-[#EAECF0] rounded-xl px-6 pr-14 text-[14px] font-medium text-[#333] outline-none focus:border-[#121111] transition-all placeholder:text-[#CCC]" 
+                                   />
+                                   <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-6 top-1/2 -translate-y-1/2 text-[#999] hover:text-[#333]">
+                                     <Eye size={20} />
+                                   </button>
+                                </div>
+                             </div>
                           </div>
-                       </form>
-                    </div>
-                  )}
-               </div>
+                       </div>
+
+                       <div className="flex justify-end pt-10">
+                          <button type="submit" className="bg-[#121111] text-white px-10 py-4.5 rounded-xl font-black text-[14px] uppercase tracking-[0.1em] hover:bg-black transition-all shadow-xl hover:shadow-black/20">
+                             UPDATE PASSWORD
+                          </button>
+                       </div>
+                    </form>
+                 </div>
+               )}
             </div>
-
           </div>
         </main>
       </div>

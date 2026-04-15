@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import Image from "next/image";
@@ -26,6 +27,7 @@ import {
 import { cn } from "@/lib/utils";
 import { useAuthStore } from "@/store/authStore";
 import { removeAuthCookie } from "@/actions/auth";
+import { ConfirmationModal } from "@/components/shared/Modals";
 
 interface AdminSidebarProps {
   role: "SuperAdmin" | "SubAdmin";
@@ -35,6 +37,13 @@ export default function AdminSidebar({ role }: AdminSidebarProps) {
   const pathname = usePathname();
   const router = useRouter();
   const setUser = useAuthStore((state) => state.setUser);
+  const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
+
+  const handleLogout = async () => {
+    setUser(null);
+    await removeAuthCookie();
+    router.push('/login-admin');
+  };
 
   const platformItems = role === "SuperAdmin" ? [
     { name: "VTM", icon: <Users size={18} />, href: "/super-admin/vtm" },
@@ -125,15 +134,21 @@ export default function AdminSidebar({ role }: AdminSidebarProps) {
 
       {/* Sidebar Footer */}
       <div className="p-8 mt-auto border-t border-[#F2F4F7]">
-        <button onClick={async () => {
-           setUser(null);
-           await removeAuthCookie();
-           router.push('/login');
-        }} className="flex items-center gap-3 px-4 py-3 rounded-2xl w-full text-red-600 hover:bg-red-50 hover:font-bold transition-all mt-auto group">
+        <button onClick={() => setIsLogoutModalOpen(true)} className="flex items-center gap-3 px-4 py-3 rounded-2xl w-full text-red-600 hover:bg-red-50 hover:font-bold transition-all mt-auto group">
           <LogOut size={20} />
           <span>Log out</span>
         </button>
       </div>
+
+      <ConfirmationModal 
+        isOpen={isLogoutModalOpen}
+        onClose={() => setIsLogoutModalOpen(false)}
+        onConfirm={handleLogout}
+        title="Confirm logout"
+        message="Are you sure you want to log out?"
+        confirmText="Logout"
+        variant="primary"
+      />
     </aside>
   );
 }

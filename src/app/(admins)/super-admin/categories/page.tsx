@@ -10,14 +10,12 @@ import {
   ChevronDown, 
   Image as ImageIcon, 
   Pencil, 
-  Eye,
-  Trash2,
+  LayoutGrid,
   ChevronFirst,
   ChevronLast
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
-import { ConfirmationModal } from "@/components/shared/Modals";
 import { useRouter } from "next/navigation";
 
 const mockCategories = [
@@ -28,13 +26,7 @@ const mockCategories = [
 export default function SuperAdminCategories() {
   const router = useRouter();
   const [isSubModalOpen, setIsSubModalOpen] = useState(false);
-  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState<any>(null);
-
-  const handleDeleteClick = (cat: any) => {
-    setSelectedCategory(cat);
-    setIsDeleteModalOpen(true);
-  };
 
   const handleOpenSubModal = (cat: any) => {
     setSelectedCategory(cat);
@@ -92,12 +84,6 @@ export default function SuperAdminCategories() {
                           </td>
                           <td className="px-8 py-6 text-right">
                              <div className="flex items-center justify-end gap-3 text-[#999]">
-                               <button 
-                                 onClick={() => handleOpenSubModal(cat)}
-                                 className="hover:text-[#333] transition-colors"
-                               >
-                                 <Plus size={18} />
-                               </button>
                                <Link 
                                  href={`/super-admin/categories/${cat.id}/edit`}
                                  className="hover:text-[#333] transition-colors"
@@ -105,10 +91,10 @@ export default function SuperAdminCategories() {
                                  <Pencil size={18} />
                                </Link>
                                <button 
-                                 onClick={() => handleDeleteClick(cat)}
-                                 className="hover:text-red-600 transition-colors"
+                                 onClick={() => handleOpenSubModal(cat)}
+                                 className="hover:text-[#333] transition-colors"
                                >
-                                 <Trash2 size={18} />
+                                 <LayoutGrid size={18} />
                                </button>
                              </div>
                           </td>
@@ -208,17 +194,6 @@ export default function SuperAdminCategories() {
             </div>
           </div>
         )}
-
-        <ConfirmationModal 
-          isOpen={isDeleteModalOpen}
-          onClose={() => setIsDeleteModalOpen(false)}
-          onConfirm={() => {
-            console.log("Deleting category:", selectedCategory?.id);
-            setIsDeleteModalOpen(false);
-          }}
-          title="Delete Category"
-          message={`Are you sure you want to delete ${selectedCategory?.name}? This will also delete all its subcategories.`}
-        />
       </div>
     </div>
   );

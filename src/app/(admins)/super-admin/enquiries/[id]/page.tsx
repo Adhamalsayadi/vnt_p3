@@ -3,12 +3,32 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter, useParams } from "next/navigation";
-import { ChevronRight, ArrowLeft, Trash2, Pencil, Calendar, Layers, Box, Hash, FileText, CheckCircle2 } from "lucide-react";
+import { ChevronRight, ArrowLeft, Trash2, Package } from "lucide-react";
 import AdminSidebar from "@/components/shared/AdminSidebar";
 import AdminHeader from "@/components/shared/AdminHeader";
 import { cn } from "@/lib/utils";
 import { ConfirmationModal } from "@/components/shared/Modals";
 import EditStatusModal from "@/components/shared/EditStatusModal";
+
+function StatusPill({ status }: { status: string }) {
+  const s = status.toLowerCase();
+  const styles = {
+    approved: "bg-[#E9F8F1] text-[#27B973]",
+    active: "bg-[#E9F8F1] text-[#27B973]",
+    rejected: "bg-[#FEEBEB] text-[#F84F4F]",
+    pending: "bg-[#F2F4F7] text-[#666]",
+    normal: "bg-[#E9F8F1] text-[#27B973]",
+    moderate: "bg-[#F2F4F7] text-[#666]",
+    true: "bg-[#E9F8F1] text-[#27B973]",
+    false: "bg-[#FEEBEB] text-[#F84F4F]",
+  }[s] || "bg-[#F2F4F7] text-[#666]";
+
+  return (
+    <span className={cn("px-2.5 py-0.5 rounded-full text-[10px] font-black tracking-tight whitespace-nowrap", styles)}>
+      {s}
+    </span>
+  );
+}
 
 export default function EnquiryDetailsPage() {
   const router = useRouter();
@@ -19,173 +39,142 @@ export default function EnquiryDetailsPage() {
   const [enquiryData] = useState({
     title: "First Enquiry",
     client: "Company name test",
-    category: "Products",
+    category: "Services",
     subCategory: "Electronics",
-    description: "Looking for high-quality industrial grade cooling fans with specified RPM and power rating. Must include warranty certification.",
+    description: "This Enquiry Description",
     requiredDate: "2024-03-01",
     unit: "ea",
     quantity: 214,
     adminStatus: "approved",
-    vtmStatus: "approved",
+    enquiry_status: "active",
+    requestType: "normal",
+    offers_received: "true",
+    standard: "STANDARD",
+    qualification: "QUALIFICATION",
+    purpose: "The Purpose of The Enquiry"
   });
 
   return (
-    <div className="flex min-h-screen bg-[#F5F5F5]">
+    <div className="flex min-h-screen bg-[#F9FAFB]">
       <AdminSidebar role="SuperAdmin" />
       <div className="flex-1 flex flex-col min-w-0 font-sans">
         <AdminHeader role="SuperAdmin" />
 
-        <main className="flex-1 p-8 overflow-auto pb-20">
-          <div className="max-w-[1200px] mx-auto space-y-8">
+        <main className="flex-1 p-8 overflow-auto">
+          <div className="max-w-[1300px] mx-auto space-y-12">
             
             {/* Breadcrumbs */}
-            <div className="flex items-center gap-2 text-[13px] font-medium text-[#999]">
-              <Link href="/super-admin" className="hover:text-[#333]">Dashboard</Link>
-              <ChevronRight size={14} />
-              <Link href="/super-admin/enquiries" className="hover:text-[#333]">enquiries</Link>
-              <ChevronRight size={14} />
-              <span className="text-[#333]">view enquiry</span>
+            <div className="flex items-center gap-2 text-[13px] font-bold lowercase">
+              <Link href="/super-admin" className="text-[#333] capitalize">Dashboard</Link>
+              <ChevronRight size={14} className="text-[#999]" />
+              <Link href="/super-admin/enquiries" className="text-[#333] capitalize">enquiries</Link>
+              <ChevronRight size={14} className="text-[#999]" />
+              <span className="text-[#999] font-medium">{enquiryData.title}</span>
             </div>
 
-            <div className="bg-white rounded-[40px] shadow-sm border border-[#F2F4F7] overflow-hidden">
-               <div className="p-10 md:p-12 border-b border-[#F2F4F7] flex items-center justify-between bg-white sticky top-0 z-10">
-                  <div className="flex items-center gap-4">
-                    <button 
-                      onClick={() => router.back()}
-                      className="w-12 h-12 rounded-full border border-[#EAECF0] flex items-center justify-center text-[#999] hover:text-[#333] hover:bg-[#F9FAFB] transition-all"
-                    >
-                      <ArrowLeft size={20} />
-                    </button>
-                    <h1 className="text-[28px] font-black text-[#1D1F24] lowercase leading-none translate-y-[-2px]">
-                      view enquiry
-                    </h1>
-                  </div>
+            {/* Content Container */}
+            <div className="bg-white rounded-[32px] border border-[#F2F4F7] shadow-sm overflow-hidden pb-10">
+               <div className="p-10 border-b border-[#F2F4F7] flex items-center justify-between">
+                  <h1 className="text-[20px] font-black text-[#333]">Enquire Details</h1>
                   <div className="flex items-center gap-4">
                      <button 
                        onClick={() => setIsStatusModalOpen(true)}
-                       className="bg-[#F2F4F7] text-[#1D1F24] px-8 py-3.5 rounded-2xl text-[13px] font-black uppercase tracking-widest hover:bg-[#EAECEF] transition-all active:scale-95"
+                       className="text-[13px] font-bold text-[#666] hover:text-black transition-colors underline"
                      >
                        Edit Status
                      </button>
                      <button 
                        onClick={() => setIsDeleteModalOpen(true)}
-                       className="w-12 h-12 rounded-full border border-red-100 flex items-center justify-center text-red-500 hover:text-red-700 hover:bg-red-50 transition-all shadow-sm"
+                       className="text-[#999] hover:text-red-500 transition-colors"
                      >
                        <Trash2 size={20} />
                      </button>
                   </div>
                </div>
 
-               <div className="p-10 md:p-14">
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-16">
-                     {/* Left Content Area (Enquiry Info) */}
-                     <div className="md:col-span-2 space-y-12">
-                        {/* Title Section */}
-                        <div className="space-y-4">
-                           <div className="flex items-center gap-3">
-                              <span className="w-1.5 h-6 bg-primary rounded-full" />
-                              <p className="text-[11px] font-black text-[#999] uppercase tracking-[3px]">Enquiry Title</p>
-                           </div>
-                           <h2 className="text-[32px] font-bold text-[#1D1F24] tracking-tight">{enquiryData.title}</h2>
-                           <div className="flex items-center gap-2 text-sm font-bold text-[#666]">
-                              <span className="text-[#999]">Posted by:</span>
-                              <Link href="/super-admin/clients/1" className="text-primary hover:underline">{enquiryData.client}</Link>
-                           </div>
-                        </div>
+               <div className="grid grid-cols-2 divide-x divide-[#F2F4F7]">
+                  {/* Row 1 */}
+                  <div className="grid grid-cols-2 border-b border-[#F2F4F7]">
+                     <div className="p-8 text-[14px] text-[#999] font-medium">title</div>
+                     <div className="p-8 text-[14px] font-bold text-[#333]">{enquiryData.title}</div>
+                  </div>
+                  <div className="grid grid-cols-2 border-b border-[#F2F4F7]">
+                     <div className="p-8 text-[14px] text-[#999] font-medium">request type</div>
+                     <div className="p-8"><StatusPill status={enquiryData.requestType} /></div>
+                  </div>
 
-                        {/* Description Section */}
-                        <div className="p-8 bg-[#F9FAFB] border border-[#EAECF0] rounded-[32px] space-y-6">
-                           <div className="flex items-center gap-3">
-                              <FileText size={18} className="text-[#999]" />
-                              <p className="text-[11px] font-black text-[#999] uppercase tracking-[2px]">Description</p>
-                           </div>
-                           <p className="text-[16px] font-medium text-[#444] leading-relaxed italic">
-                              "{enquiryData.description}"
-                           </p>
-                        </div>
+                  {/* Row 2 */}
+                  <div className="grid grid-cols-2 border-b border-[#F2F4F7]">
+                     <div className="p-8 text-[14px] text-[#999] font-medium">required_date</div>
+                     <div className="p-8 text-[14px] font-bold text-[#333]">{enquiryData.requiredDate}</div>
+                  </div>
+                  <div className="grid grid-cols-2 border-b border-[#F2F4F7]">
+                     <div className="p-8 text-[14px] text-[#999] font-medium">company name</div>
+                     <div className="p-8 text-[14px] font-bold text-[#333] tracking-tight">{enquiryData.client}</div>
+                  </div>
 
-                        {/* Offers Section Placeholder */}
-                        <div className="space-y-6">
-                           <div className="flex items-center justify-between">
-                              <div className="flex items-center gap-3">
-                                 <CheckCircle2 size={18} className="text-[#999]" />
-                                 <p className="text-[11px] font-black text-[#999] uppercase tracking-[2px]">Received Offers</p>
-                              </div>
-                              <Link href={`/super-admin/enquiries/${id}/offers`} className="text-[13px] font-black text-primary hover:underline uppercase tracking-widest italic">View All Offers</Link>
-                           </div>
-                           <div className="p-16 border-2 border-dashed border-[#EAECF0] rounded-[32px] flex flex-col items-center justify-center gap-4 text-[#999]">
-                              <div className="w-16 h-16 rounded-full bg-white flex items-center justify-center shadow-sm">
-                                 <Layers size={32} className="opacity-20" />
-                              </div>
-                              <p className="text-sm font-bold lowercase">no offers received yet</p>
-                           </div>
-                        </div>
-                     </div>
+                  {/* Row 3 */}
+                  <div className="grid grid-cols-2 border-b border-[#F2F4F7]">
+                     <div className="p-8 text-[14px] text-[#999] font-medium">category</div>
+                     <div className="p-8 text-[14px] text-[#333] font-medium tracking-tight">{enquiryData.category}</div>
+                  </div>
+                  <div className="grid grid-cols-2 border-b border-[#F2F4F7]">
+                     <div className="p-8 text-[14px] text-[#999] font-medium">enquiry_status</div>
+                     <div className="p-8 text-[14px] font-bold text-[#333]">{enquiryData.enquiry_status}</div>
+                  </div>
 
-                     {/* Right Sidebar Area (Stats/Tags) */}
-                     <div className="space-y-10">
-                        {/* Details Cards */}
-                        <div className="space-y-6">
-                           <div className="flex flex-col gap-4">
-                              <div className="flex items-center gap-4 p-5 bg-white border border-[#F2F4F7] rounded-[24px] shadow-sm">
-                                 <div className="w-12 h-12 rounded-2xl bg-[#F9FAFB] flex items-center justify-center text-primary border border-[#EAECF0]">
-                                    <Layers size={20} />
-                                 </div>
-                                 <div className="space-y-0.5">
-                                    <p className="text-[10px] font-black text-[#999] uppercase tracking-widest">Category</p>
-                                    <p className="text-[14px] font-bold text-[#1D1F24]">{enquiryData.category}</p>
-                                 </div>
-                              </div>
+                  {/* Row 4 */}
+                  <div className="grid grid-cols-2 border-b border-[#F2F4F7]">
+                     <div className="p-8 text-[14px] text-[#999] font-medium">quantity</div>
+                     <div className="p-8 text-[14px] font-bold text-[#333]">{enquiryData.quantity}</div>
+                  </div>
+                  <div className="grid grid-cols-2 border-b border-[#F2F4F7]">
+                     <div className="p-8 text-[14px] text-[#999] font-medium">accepted price</div>
+                     <div className="p-8 text-[14px] font-bold text-[#333]">-</div>
+                  </div>
 
-                              <div className="flex items-center gap-4 p-5 bg-white border border-[#F2F4F7] rounded-[24px] shadow-sm">
-                                 <div className="w-12 h-12 rounded-2xl bg-[#F9FAFB] flex items-center justify-center text-primary border border-[#EAECF0]">
-                                    <Box size={20} />
-                                 </div>
-                                 <div className="space-y-0.5">
-                                    <p className="text-[10px] font-black text-[#999] uppercase tracking-widest">Sub Category</p>
-                                    <p className="text-[14px] font-bold text-[#1D1F24]">{enquiryData.subCategory}</p>
-                                 </div>
-                              </div>
+                  {/* Row 5 */}
+                  <div className="grid grid-cols-2 border-b border-[#F2F4F7]">
+                     <div className="p-8 text-[14px] text-[#999] font-medium">enquiry eta</div>
+                     <div className="p-8 text-[14px] font-bold text-[#333]">-</div>
+                  </div>
+                  <div className="grid grid-cols-2 border-b border-[#F2F4F7]">
+                     <div className="p-8 text-[14px] text-[#999] font-medium">description</div>
+                     <div className="p-8 text-[14px] font-bold text-[#333] tracking-tight">{enquiryData.description}</div>
+                  </div>
 
-                              <div className="flex items-center gap-4 p-5 bg-white border border-[#F2F4F7] rounded-[24px] shadow-sm">
-                                 <div className="w-12 h-12 rounded-2xl bg-[#F9FAFB] flex items-center justify-center text-primary border border-[#EAECF0]">
-                                    <Hash size={20} />
-                                 </div>
-                                 <div className="space-y-0.5">
-                                    <p className="text-[10px] font-black text-[#999] uppercase tracking-widest">Quantity</p>
-                                    <p className="text-[14px] font-bold text-[#1D1F24]">{enquiryData.quantity} {enquiryData.unit}</p>
-                                 </div>
-                              </div>
+                  {/* Row 6 */}
+                  <div className="grid grid-cols-2 border-b border-[#F2F4F7]">
+                     <div className="p-8 text-[14px] text-[#999] font-medium">offers_received</div>
+                     <div className="p-8 text-[14px] font-bold text-[#333]">{enquiryData.offers_received}</div>
+                  </div>
+                  <div className="grid grid-cols-2 border-b border-[#F2F4F7]">
+                     <div className="p-8 text-[14px] text-[#999] font-medium">purpose</div>
+                     <div className="p-8 text-[14px] font-bold text-[#333] tracking-tight">{enquiryData.purpose}</div>
+                  </div>
 
-                              <div className="flex items-center gap-4 p-5 bg-white border border-[#F2F4F7] rounded-[24px] shadow-sm">
-                                 <div className="w-12 h-12 rounded-2xl bg-[#F9FAFB] flex items-center justify-center text-primary border border-[#EAECF0]">
-                                    <Calendar size={20} />
-                                 </div>
-                                 <div className="space-y-0.5">
-                                    <p className="text-[10px] font-black text-[#999] uppercase tracking-widest">Required Date</p>
-                                    <p className="text-[14px] font-bold text-[#1D1F24]">{enquiryData.requiredDate}</p>
-                                 </div>
-                              </div>
-                           </div>
-                        </div>
+                  {/* Row 7 */}
+                  <div className="grid grid-cols-2 border-b border-[#F2F4F7]">
+                     <div className="p-8 text-[14px] text-[#999] font-medium">standard</div>
+                     <div className="p-8 text-[14px] font-bold text-[#333]">{enquiryData.standard}</div>
+                  </div>
+                  <div className="grid grid-cols-2 border-b border-[#F2F4F7]">
+                     <div className="p-8 text-[14px] text-[#999] font-medium">qualification</div>
+                     <div className="p-8 text-[14px] font-bold text-[#333]">{enquiryData.qualification}</div>
+                  </div>
 
-                        {/* Status Section */}
-                        <div className="p-8 bg-[#1D1F24] rounded-[32px] text-white shadow-xl shadow-black/10 flex flex-col items-center text-center space-y-6">
-                           <p className="text-[10px] font-black text-white/40 uppercase tracking-[3px]">Enquiry Status</p>
-                           <div className="space-y-2">
-                              <p className="text-[12px] font-bold text-[#F3D45A] uppercase tracking-widest italic">APPROVED</p>
-                              <div className="flex items-center justify-center gap-1">
-                                 {[1, 2, 3].map(i => (
-                                    <div key={i} className={cn("w-2 h-2 rounded-full", i === 1 ? "bg-[#F3D45A]" : "bg-white/10")} />
-                                 ))}
-                              </div>
-                           </div>
-                           <p className="text-[13px] font-medium text-white/60 lowercase italic">Successfully approved by both VTM and Super Admin systems.</p>
+                  {/* Row 8 - Full Width for Image */}
+                  <div className="col-span-2 grid grid-cols-[25%_75%]">
+                     <div className="p-8 text-[14px] text-[#999] font-medium">Image</div>
+                     <div className="p-8">
+                        <div className="w-12 h-12 rounded-xl bg-gray-100 flex items-center justify-center overflow-hidden border border-[#EAECF0]">
+                           <Package size={20} className="text-[#999]" />
                         </div>
                      </div>
                   </div>
                </div>
             </div>
+
           </div>
         </main>
 

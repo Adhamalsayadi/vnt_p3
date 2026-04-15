@@ -8,14 +8,12 @@ import {
   ChevronLeft, 
   ChevronDown, 
   Pencil,
-  Trash2,
   ChevronFirst,
   ChevronLast
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import Image from "next/image";
-import { ConfirmationModal } from "@/components/shared/Modals";
 import { useRouter } from "next/navigation";
 
 const mockCountries = [
@@ -25,13 +23,7 @@ const mockCountries = [
 
 export default function SuperAdminCountries() {
   const router = useRouter();
-  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [selectedCountry, setSelectedCountry] = useState<any>(null);
-
-  const handleDeleteClick = (country: any) => {
-    setSelectedCountry(country);
-    setIsDeleteModalOpen(true);
-  };
 
   return (
     <div className="flex min-h-screen bg-[#F5F5F5]">
@@ -88,7 +80,7 @@ export default function SuperAdminCountries() {
                              )}
                           </td>
                           <td className="px-8 py-6">
-                             <span className="bg-[#E9F8F1] text-[#27B973] px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider">
+                             <span className="bg-[#E9F8F1] text-[#27B973] px-3 py-1 rounded-full text-[10px] font-black tracking-wider">
                                active
                              </span>
                           </td>
@@ -100,12 +92,6 @@ export default function SuperAdminCountries() {
                                >
                                  <Pencil size={18} />
                                </Link>
-                               <button 
-                                 onClick={() => handleDeleteClick(c)}
-                                 className="hover:text-red-600 transition-colors"
-                               >
-                                 <Trash2 size={18} />
-                               </button>
                              </div>
                           </td>
                         </tr>
@@ -139,17 +125,6 @@ export default function SuperAdminCountries() {
 
           </div>
         </main>
-
-        <ConfirmationModal 
-          isOpen={isDeleteModalOpen}
-          onClose={() => setIsDeleteModalOpen(false)}
-          onConfirm={() => {
-            console.log("Deleting country:", selectedCountry?.id);
-            setIsDeleteModalOpen(false);
-          }}
-          title="Delete Country"
-          message={`Are you sure you want to delete ${selectedCountry?.name}?`}
-        />
       </div>
     </div>
   );

@@ -1,142 +1,128 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { ChevronRight, ArrowLeft, Eye, EyeOff } from "lucide-react";
 import AdminSidebar from "@/components/shared/AdminSidebar";
 import AdminHeader from "@/components/shared/AdminHeader";
-import { cn } from "@/lib/utils";
+import { ChevronRight, Image as ImageIcon, ChevronDown } from "lucide-react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 export default function CreateVtmPage() {
   const router = useRouter();
-  const [showPassword, setShowPassword] = useState(false);
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    password: "",
-    role: "vtm controller",
-    phone: "",
-  });
 
   return (
-    <div className="flex min-h-screen bg-[#F5F5F5]">
+    <div className="flex min-h-screen bg-[#F9FAFB]">
       <AdminSidebar role="SuperAdmin" />
       <div className="flex-1 flex flex-col min-w-0 font-sans">
         <AdminHeader role="SuperAdmin" />
 
         <main className="flex-1 p-8 overflow-auto">
-          <div className="max-w-[800px] mx-auto space-y-8">
+          <div className="max-w-[1500px] mx-auto space-y-8">
             
             {/* Breadcrumbs */}
-            <div className="flex items-center gap-2 text-[13px] font-medium text-[#999]">
-              <Link href="/super-admin" className="hover:text-[#333]">Dashboard</Link>
-              <ChevronRight size={14} />
-              <Link href="/super-admin/vtm" className="hover:text-[#333]">vtm</Link>
-              <ChevronRight size={14} />
-              <span className="text-[#333]">create new account</span>
+            <div className="flex items-center gap-2 text-[13px] font-bold lowercase">
+              <Link href="/super-admin" className="text-[#333] capitalize">Dashboard</Link>
+              <ChevronRight size={14} className="text-[#999]" />
+              <Link href="/super-admin/vtm" className="text-[#333]">VTMs</Link>
+              <ChevronRight size={14} className="text-[#999]" />
+              <span className="text-[#999]">create admin account</span>
             </div>
 
-            <div className="bg-white rounded-[32px] shadow-sm border border-[#F2F4F7] overflow-hidden animate-in fade-in slide-in-from-bottom-4 duration-500">
-               <div className="p-10 border-b border-[#F2F4F7] flex items-center gap-4">
-                  <button 
-                    onClick={() => router.back()}
-                    className="w-10 h-10 rounded-full border border-[#EAECF0] flex items-center justify-center text-[#999] hover:text-[#333] hover:bg-[#F9FAFB] transition-all"
-                  >
-                    <ArrowLeft size={18} />
-                  </button>
-                  <h1 className="text-[24px] font-bold text-[#1D1F24] lowercase leading-none translate-y-[-2px]">
-                    create new account
-                  </h1>
-               </div>
-
-               <div className="p-10 space-y-8">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-8">
-                     {/* Full Name */}
-                     <div className="space-y-3">
-                       <label className="text-[14px] font-black text-[#1D1F24] lowercase tracking-tight ml-1">Full Name</label>
+            {/* Form Card */}
+            <div className="bg-white rounded-[32px] border border-[#F2F4F7] shadow-sm p-14 mt-10">
+               <form className="space-y-12" onSubmit={(e) => e.preventDefault()}>
+                  
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-12">
+                    {/* Name */}
+                    <div className="relative group">
+                       <label className="absolute -top-2.5 left-5 px-1.5 bg-white text-[11px] font-medium text-[#999] transition-all z-10">
+                          Name
+                       </label>
                        <input 
                          type="text" 
-                         placeholder="Enter name"
-                         className="w-full h-14 bg-[#F9FAFB] border border-[#EAECF0] rounded-2xl px-6 text-sm font-bold text-[#1D1F24] outline-none focus:ring-2 focus:ring-[#1D1F24]/5 transition-all placeholder:text-[#BBB]"
-                         value={formData.name}
-                         onChange={(e) => setFormData({...formData, name: e.target.value})}
+                         placeholder="Name"
+                         className="w-full px-5 h-14 bg-white border border-[#EAECF0] rounded-xl text-[14px] font-medium text-[#1D1F24] outline-none"
                        />
-                     </div>
+                    </div>
 
-                     {/* Email */}
-                     <div className="space-y-3">
-                       <label className="text-[14px] font-black text-[#1D1F24] lowercase tracking-tight ml-1">Email</label>
+                    {/* Email */}
+                    <div className="relative group">
                        <input 
                          type="email" 
-                         placeholder="Enter email"
-                         className="w-full h-14 bg-[#F9FAFB] border border-[#EAECF0] rounded-2xl px-6 text-sm font-bold text-[#1D1F24] outline-none focus:ring-2 focus:ring-[#1D1F24]/5 transition-all placeholder:text-[#BBB]"
-                         value={formData.email}
-                         onChange={(e) => setFormData({...formData, email: e.target.value})}
+                         placeholder="Email"
+                         className="w-full px-5 h-14 bg-white border border-[#EAECF0] rounded-xl text-[14px] font-medium text-[#1D1F24] outline-none"
                        />
-                     </div>
+                    </div>
 
-                     {/* Password */}
-                     <div className="space-y-3">
-                       <label className="text-[14px] font-black text-[#1D1F24] lowercase tracking-tight ml-1">Password</label>
+                    {/* Mobile Code & Phone Row */}
+                    <div className="grid grid-cols-[130px_1fr] gap-6">
+                       <div className="relative">
+                          <label className="absolute -top-2.5 left-5 px-1.5 bg-white text-[11px] font-medium text-[#999] transition-all z-10">
+                             Mobile Code
+                          </label>
+                          <div className="relative">
+                            <select className="w-full px-5 h-14 bg-white border border-[#EAECF0] rounded-xl text-[14px] font-medium text-[#1D1F24] outline-none appearance-none cursor-pointer">
+                               <option>966</option>
+                            </select>
+                            <ChevronDown size={14} className="absolute right-4 top-1/2 -translate-y-1/2 text-[#999] pointer-events-none" />
+                          </div>
+                       </div>
                        <div className="relative">
                           <input 
-                            type={showPassword ? "text" : "password"} 
-                            placeholder="Enter password"
-                            className="w-full h-14 bg-[#F9FAFB] border border-[#EAECF0] rounded-2xl px-6 text-sm font-bold text-[#1D1F24] outline-none focus:ring-2 focus:ring-[#1D1F24]/5 transition-all placeholder:text-[#BBB]"
-                            value={formData.password}
-                            onChange={(e) => setFormData({...formData, password: e.target.value})}
+                            type="text" 
+                            placeholder="Phone"
+                            className="w-full px-5 h-14 bg-white border border-[#EAECF0] rounded-xl text-[14px] font-medium text-[#1D1F24] outline-none"
                           />
-                          <button 
-                            type="button"
-                            onClick={() => setShowPassword(!showPassword)}
-                            className="absolute right-5 top-1/2 -translate-y-1/2 text-[#999] hover:text-[#333] transition-colors"
-                          >
-                            {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
-                          </button>
                        </div>
-                     </div>
+                    </div>
 
-                     {/* Role / Store select (Based on image showing "Store") */}
-                     <div className="space-y-3">
-                       <label className="text-[14px] font-black text-[#1D1F24] lowercase tracking-tight ml-1">Role / Segment</label>
-                       <select 
-                         className="w-full h-14 bg-[#F9FAFB] border border-[#EAECF0] rounded-2xl px-6 text-sm font-bold text-[#1D1F24] outline-none appearance-none lowercase"
-                         value={formData.role}
-                         onChange={(e) => setFormData({...formData, role: e.target.value})}
-                       >
-                          <option value="vtm controller">VTM Controller</option>
-                          <option value="support">Support</option>
-                       </select>
-                     </div>
+                    {/* Country Dropdown */}
+                    <div className="relative">
+                       <div className="relative">
+                         <select className="w-full px-5 h-14 bg-white border border-[#EAECF0] rounded-xl text-[14px] font-medium text-[#1D1F24] outline-none appearance-none cursor-pointer">
+                            <option>Country</option>
+                         </select>
+                         <ChevronDown size={14} className="absolute right-4 top-1/2 -translate-y-1/2 text-[#999] pointer-events-none" />
+                       </div>
+                    </div>
+                  </div>
 
-                     {/* Phone Number */}
-                     <div className="space-y-3 md:col-span-2">
-                       <label className="text-[14px] font-black text-[#1D1F24] lowercase tracking-tight ml-1">Phone Number</label>
-                       <input 
-                         type="text" 
-                         placeholder="+966 50 000 0000"
-                         className="w-full h-14 bg-[#F9FAFB] border border-[#EAECF0] rounded-2xl px-6 text-sm font-bold text-[#1D1F24] outline-none focus:ring-2 focus:ring-[#1D1F24]/5 transition-all placeholder:text-[#BBB]"
-                         value={formData.phone}
-                         onChange={(e) => setFormData({...formData, phone: e.target.value})}
-                       />
+                  {/* Image Upload */}
+                  <div className="space-y-4">
+                     <p className="text-[14px] font-bold text-[#1D1F24] lowercase">Image</p>
+                     <div className="flex items-center gap-4 max-w-2xl">
+                        <div className="text-[#999]">
+                           <ImageIcon size={22} />
+                        </div>
+                        <div className="flex-1 flex items-center bg-white border border-[#EAECF0] rounded-xl h-14 overflow-hidden">
+                           <div className="flex-1 px-4"></div>
+                           <button type="button" className="h-full px-8 border-l border-[#EAECF0] text-[13px] font-medium text-[#333] hover:bg-[#F9FAFB] transition-all">
+                              browse
+                           </button>
+                        </div>
                      </div>
                   </div>
 
-                  {/* Action Buttons */}
-                  <div className="flex items-center justify-end gap-4 pt-10 border-t border-[#F2F4F7]">
-                    <button 
-                      onClick={() => router.back()}
-                      className="px-8 py-4 rounded-xl text-sm font-black text-[#999] hover:text-[#333] transition-colors uppercase tracking-widest"
-                    >
-                      Cancel
-                    </button>
-                    <button className="bg-[#121111] text-white px-12 py-4 rounded-xl text-sm font-black uppercase tracking-widest transition-all shadow-xl hover:shadow-black/10 active:scale-[0.98]">
-                       Create Account
-                    </button>
+                  {/* Buttons */}
+                  <div className="flex gap-4 pt-10">
+                     <button 
+                       type="button"
+                       onClick={() => router.back()}
+                       className="px-10 py-3.5 bg-[#E0E2E7] text-[#1D1F24] rounded-xl text-[13px] font-black uppercase tracking-[0.1em] hover:bg-[#D4D6DC] transition-all"
+                     >
+                       CANCEL
+                     </button>
+                     <button 
+                       type="submit"
+                       className="px-10 py-3.5 bg-[#121111] text-white rounded-xl text-[13px] font-black uppercase tracking-[0.1em] hover:bg-black transition-all shadow-md"
+                     >
+                       CREATE
+                     </button>
                   </div>
-               </div>
+
+               </form>
             </div>
+
           </div>
         </main>
       </div>
