@@ -84,8 +84,8 @@ export default function ClientEnquiriesPage() {
     const enquiry = enquiries.find((e: Enquiry) => e.id === id);
     if (!enquiry) return;
     switch (action) {
-      case "Delete":
-        openModal("delete", enquiry);
+      case "Hide":
+        openModal("delete", enquiry); // Reusing 'delete' modal state for 'hide'
         break;
       case "Edit":
         openModal("edit", enquiry);
@@ -101,9 +101,9 @@ export default function ClientEnquiriesPage() {
     }
   };
 
-  const confirmDelete = () => {
+  const confirmHide = () => {
     if (activeEnquiry)
-      deleteEnquiry.mutate(activeEnquiry.id, { onSuccess: closeModal });
+      toggleVisibility.mutate(activeEnquiry.id, { onSuccess: closeModal });
   };
 
   const loading = isLoading;
@@ -298,18 +298,11 @@ export default function ClientEnquiriesPage() {
                                 <Eye size={16} />
                               </button>
                               <button
-                                onClick={() => handleAction(enq.id, "Edit")}
+                                onClick={() => handleAction(enq.id, "Hide")}
                                 className="p-1 hover:text-primary transition-colors"
-                                title="Edit"
+                                title="Hide"
                               >
-                                <Edit3 size={16} />
-                              </button>
-                              <button
-                                onClick={() => handleAction(enq.id, "Resubmit")}
-                                className="p-1 hover:text-primary transition-colors"
-                                title="Resubmit"
-                              >
-                                <RotateCw size={16} />
+                                <X size={16} />
                               </button>
                             </div>
                           </td>
@@ -390,9 +383,10 @@ export default function ClientEnquiriesPage() {
       <ConfirmationModal
         isOpen={isDeleteModalOpen}
         onClose={closeModal}
-        onConfirm={confirmDelete}
-        title="Delete Enquiry"
-        message={`Are you sure you want to delete "${activeEnquiry?.title}"? This action cannot be undone.`}
+        onConfirm={confirmHide}
+        title="Hide Enquiry"
+        message={`Are you sure you want to hide "${activeEnquiry?.title}"? This item will no longer be visible to others.`}
+        confirmText="Hide"
       />
 
       <EditEnquiryModal

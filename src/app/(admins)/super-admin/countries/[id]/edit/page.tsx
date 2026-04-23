@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter, useParams } from "next/navigation";
-import { ChevronRight, ArrowLeft, Upload, Circle, Trash2 } from "lucide-react";
+import { ChevronRight, ArrowLeft, Upload, Circle, EyeOff } from "lucide-react";
 import AdminSidebar from "@/components/shared/AdminSidebar";
 import AdminHeader from "@/components/shared/AdminHeader";
 import { cn } from "@/lib/utils";
@@ -52,9 +52,10 @@ export default function EditCountryPage() {
                   </div>
                   <button 
                     onClick={() => setIsDeleteModalOpen(true)}
-                    className="w-10 h-10 rounded-full border border-red-100 flex items-center justify-center text-red-400 hover:text-red-600 hover:bg-red-50 transition-all"
+                    className="w-10 h-10 rounded-full border border-[#EAECF0] flex items-center justify-center text-[#999] hover:text-black transition-all"
+                    title="Hide"
                   >
-                    <Trash2 size={18} />
+                    <EyeOff size={18} />
                   </button>
                </div>
 
@@ -138,11 +139,12 @@ export default function EditCountryPage() {
           isOpen={isDeleteModalOpen}
           onClose={() => setIsDeleteModalOpen(false)}
           onConfirm={() => {
-            console.log("Deleting country:", id);
+            console.log("Hiding country:", id);
             router.push("/super-admin/countries");
           }}
-          title="Delete Country"
-          message="Are you sure you want to delete this country? This action cannot be undone."
+          title="Hide Country"
+          message="Are you sure you want to hide this country? It will no longer be visible in selection lists."
+          confirmText="Hide"
         />
       </div>
     </div>

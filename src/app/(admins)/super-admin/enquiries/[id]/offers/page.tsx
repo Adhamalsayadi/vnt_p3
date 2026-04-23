@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
+import { useParams } from "next/navigation";
 
 const mockOffers = [
   { id: 1, title: "First Enquiry", supplier: "Company name5", price: "170.00", vtm: "pending", admin: "pending" },
@@ -33,6 +34,7 @@ function StatusPill({ status }: { status: string }) {
 
 export default function EnquiryOffers() {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const { id } = useParams();
 
   return (
     <div className="flex min-h-screen bg-[#F5F5F5]">
@@ -69,10 +71,14 @@ export default function EnquiryOffers() {
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-[#F2F4F7]">
-                      {mockOffers.map((offer) => (
+                      {mockOffers.map((offer, index) => (
                         <tr key={offer.id} className="hover:bg-[#F9FAFB] transition-colors group">
-                          <td className="px-8 py-6 text-sm font-medium text-[#333]">{offer.id}</td>
-                          <td className="px-8 py-6 text-sm font-bold text-[#333]">{offer.title}</td>
+                          <td className="px-8 py-6 text-sm font-medium text-[#333]">{index + 1}</td>
+                          <td className="px-8 py-6 text-sm font-bold text-[#333]">
+                            <Link href={`/super-admin/enquiries/${id}`} className="hover:text-primary transition-colors underline underline-offset-2">
+                               {offer.title}
+                            </Link>
+                          </td>
                           <td className="px-8 py-6 text-sm font-bold text-[#333]">{offer.supplier}</td>
                           <td className="px-8 py-6 text-sm font-bold text-[#333]">{offer.price}</td>
                           <td className="px-8 py-6"><StatusPill status={offer.vtm} /></td>

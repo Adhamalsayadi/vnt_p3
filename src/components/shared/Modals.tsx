@@ -38,8 +38,8 @@ export const ConfirmationModal = ({
   onConfirm, 
   title, 
   message,
-  confirmText = "Delete",
-  variant = "danger"
+  confirmText = "Hide",
+  variant = "primary"
 }: {
   isOpen: boolean;
   onClose: () => void;
@@ -47,7 +47,7 @@ export const ConfirmationModal = ({
   title: string;
   message: string;
   confirmText?: string;
-  variant?: "danger" | "primary";
+  variant?: "danger" | "primary" | "warning";
 }) => {
   return (
     <Modal isOpen={isOpen} onClose={onClose} title={title}>
@@ -108,6 +108,9 @@ export const EditEnquiryModal = ({
             e.preventDefault();
             const formData = new FormData(e.currentTarget);
             const data = Object.fromEntries(formData.entries());
+            // If previewImage is a string and matches enquiry.image, it means it's not changed.
+            // If previewImage is a URL (from CreateObjectURL), we should handle it.
+            // The caller onSave should handle the file from newImage input.
             onSave(data);
             onClose();
         }}>
@@ -144,7 +147,7 @@ export const EditEnquiryModal = ({
                    className="block w-full text-sm text-[#667085] file:mr-4 file:py-2.5 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-bold file:bg-primary/10 file:text-primary hover:file:bg-primary/20 transition-all cursor-pointer border border-[#EAECF0] rounded-xl bg-[#F9FAFB]"
                  />
                  {/* Hidden input to pass the existing image url if not replaced */}
-                 <input type="hidden" name="image" value={previewImage || ""} />
+                 <input type="hidden" name="image" value={typeof previewImage === 'string' ? previewImage : ""} />
               </div>
            </div>
 

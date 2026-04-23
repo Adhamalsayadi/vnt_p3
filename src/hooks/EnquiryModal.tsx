@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import { Enquiry } from "@/types/enquiries";
 import { submitAction } from "@/actions/actionbutton";
+import { useAuthStore } from "@/store/authStore";
 interface EnquiryModalProps {
   enquiry: Enquiry;
   onClose: () => void;
@@ -17,6 +18,7 @@ export default function EnquiryModal({
   onOpenRating,
   onSubmitRfq,
 }: EnquiryModalProps) {
+  const user = useAuthStore((state) => state.user);
   const tableRows = [
     {
       leftL: "title",
@@ -48,12 +50,6 @@ export default function EnquiryModal({
       leftV: enquiry.enquiryEta,
       rightL: "standard",
       rightV: enquiry.standard,
-    },
-    {
-      leftL: "offers_received",
-      leftV: enquiry.offersReceived ? "true" : "false",
-      rightL: "seller",
-      rightV: enquiry.sellerName,
     },
   ];
 
@@ -165,11 +161,13 @@ export default function EnquiryModal({
                   />
                 </svg>
               </button>
-              <form action={submitAction}>
-                <button className="w-full h-[52px] md:h-[58px] bg-[#F4D361] rounded-[10px] font-bold text-[18px] md:text-[20px] text-black shadow-md hover:scale-[0.98] transition-all mt-1">
-                  Submit your price
-                </button>
-              </form>
+              {(user?.role === "Supplier" || !user) && (
+                <form action={submitAction}>
+                  <button className="w-full h-[52px] md:h-[58px] bg-[#F4D361] rounded-[10px] font-bold text-[18px] md:text-[20px] text-black shadow-md hover:scale-[0.98] transition-all mt-1">
+                    Submit your price
+                  </button>
+                </form>
+              )}
             </div>
           </div>
 

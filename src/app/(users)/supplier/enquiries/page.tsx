@@ -4,7 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import Sidebar from "../../client/Sidebar/Sidebar";
 import Header from "../../client/header";
-import { Eye, Edit3, RotateCw, ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from "lucide-react";
+import { Eye, Edit3, RotateCw, ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight, X } from "lucide-react";
 import {
   ConfirmationModal,
   EditEnquiryModal,
@@ -62,7 +62,7 @@ export default function SupplierEnquiriesPage() {
     const enquiry = enquiries.find((e: Enquiry) => e.id === id);
     if (!enquiry) return;
     switch (action) {
-      case "Delete":
+      case "Hide":
         openModal("delete", enquiry);
         break;
       case "Edit":
@@ -79,9 +79,9 @@ export default function SupplierEnquiriesPage() {
     }
   };
 
-  const confirmDelete = () => {
+  const confirmHide = () => {
     if (activeEnquiry)
-      deleteEnquiry.mutate(activeEnquiry.id, { onSuccess: closeModal });
+      toggleVisibility.mutate(activeEnquiry.id, { onSuccess: closeModal });
   };
 
   const loading = isLoading;
@@ -222,18 +222,11 @@ export default function SupplierEnquiriesPage() {
                                 <Eye size={16} />
                               </button>
                               <button
-                                onClick={() => handleAction(enq.id, "Edit")}
+                                onClick={() => handleAction(enq.id, "Hide")}
                                 className="p-1 hover:text-primary transition-colors"
-                                title="Edit"
+                                title="Hide"
                               >
-                                <Edit3 size={16} />
-                              </button>
-                              <button
-                                onClick={() => handleAction(enq.id, "Resubmit")}
-                                className="p-1 hover:text-primary transition-colors"
-                                title="Resubmit"
-                              >
-                                <RotateCw size={16} />
+                                <X size={16} />
                               </button>
                             </div>
                           </td>
@@ -314,9 +307,10 @@ export default function SupplierEnquiriesPage() {
       <ConfirmationModal
         isOpen={isDeleteModalOpen}
         onClose={closeModal}
-        onConfirm={confirmDelete}
-        title="Delete Enquiry"
-        message={`Are you sure you want to delete "${activeEnquiry?.title}"? This action cannot be undone.`}
+        onConfirm={confirmHide}
+        title="Hide Enquiry"
+        message={`Are you sure you want to hide "${activeEnquiry?.title}"?`}
+        confirmText="Hide"
       />
 
       <EditEnquiryModal

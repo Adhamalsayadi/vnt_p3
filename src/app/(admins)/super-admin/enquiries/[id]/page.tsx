@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter, useParams } from "next/navigation";
-import { ChevronRight, ArrowLeft, Trash2, Package } from "lucide-react";
+import { ChevronRight, ArrowLeft, EyeOff, Package } from "lucide-react";
 import AdminSidebar from "@/components/shared/AdminSidebar";
 import AdminHeader from "@/components/shared/AdminHeader";
 import { cn } from "@/lib/utils";
@@ -85,9 +85,10 @@ export default function EnquiryDetailsPage() {
                      </button>
                      <button 
                        onClick={() => setIsDeleteModalOpen(true)}
-                       className="text-[#999] hover:text-red-500 transition-colors"
+                       className="text-[#999] hover:text-black transition-colors"
+                       title="Hide"
                      >
-                       <Trash2 size={20} />
+                       <EyeOff size={20} />
                      </button>
                   </div>
                </div>
@@ -193,11 +194,12 @@ export default function EnquiryDetailsPage() {
           isOpen={isDeleteModalOpen}
           onClose={() => setIsDeleteModalOpen(false)}
           onConfirm={() => {
-            console.log("Deleting enquiry:", id);
+            console.log("Hiding enquiry:", id);
             router.push("/super-admin/enquiries");
           }}
-          title="Delete Enquiry"
-          message={`Are you sure you want to delete this enquiry? This action cannot be undone.`}
+          title="Hide Enquiry"
+          message={`Are you sure you want to hide this enquiry? It will no longer be visible to others.`}
+          confirmText="Hide"
         />
       </div>
     </div>

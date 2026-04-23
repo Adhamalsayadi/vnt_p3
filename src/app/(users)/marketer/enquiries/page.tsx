@@ -3,7 +3,7 @@
 import Link from "next/link";
 import Sidebar from "../../client/Sidebar/Sidebar";
 import Header from "../../client/header";
-import { Eye, Edit3, Trash2, EyeOff } from "lucide-react";
+import { Eye, Edit3, EyeOff } from "lucide-react";
 import {
   ConfirmationModal,
   EditEnquiryModal,
@@ -43,9 +43,6 @@ export default function MarketerEnquiriesPage() {
     const enquiry = enquiries.find((e: Enquiry) => e.id === id);
     if (!enquiry) return;
     switch (action) {
-      case "Delete":
-        openModal("delete", enquiry);
-        break;
       case "Edit":
         openModal("edit", enquiry);
         break;
@@ -60,9 +57,8 @@ export default function MarketerEnquiriesPage() {
     }
   };
 
-  const confirmDelete = () => {
-    if (activeEnquiry)
-      deleteEnquiry.mutate(activeEnquiry.id, { onSuccess: closeModal });
+  const confirmHide = (id: string) => {
+     toggleVisibility.mutate(id, { onSuccess: closeModal });
   };
 
   const saveEdit = (data: {
@@ -215,18 +211,12 @@ export default function MarketerEnquiriesPage() {
                               <Edit3 size={18} />
                             </button>
                             <button
-                              onClick={() => handleAction(enq.id, "Delete")}
-                              className="p-1 hover:text-[#B42318] transition-colors"
-                            >
-                              <Trash2 size={18} />
-                            </button>
-                            <button
                               onClick={() => handleAction(enq.id, "Hide")}
                               className={cn(
                                 "p-1 transition-colors",
                                 enq.isHidden
                                   ? "text-primary"
-                                  : "hover:text-gray-900"
+                                  : "hover:text-primary"
                               )}
                               title={enq.isHidden ? "Unhide" : "Hide"}
                             >
@@ -247,9 +237,10 @@ export default function MarketerEnquiriesPage() {
       <ConfirmationModal
         isOpen={isDeleteModalOpen}
         onClose={closeModal}
-        onConfirm={confirmDelete}
-        title="Delete Enquiry"
-        message={`Are you sure you want to delete "${activeEnquiry?.title}"? This action cannot be undone.`}
+        onConfirm={() => activeEnquiry && confirmHide(activeEnquiry.id)}
+        title="Hide Enquiry"
+        message={`Are you sure you want to hide "${activeEnquiry?.title}"?`}
+        confirmText="Hide"
       />
 
       <EditEnquiryModal

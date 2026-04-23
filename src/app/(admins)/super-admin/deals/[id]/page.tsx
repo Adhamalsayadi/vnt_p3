@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter, useParams } from "next/navigation";
-import { ChevronRight, ArrowLeft, Trash2, Building2, User, Mail, Phone, MapPin, Globe, FileText, Calendar, Box, Layers, Hash } from "lucide-react";
+import { ChevronRight, ArrowLeft, EyeOff, Building2, User, Mail, Phone, MapPin, Globe, FileText, Calendar, Box, Layers, Hash } from "lucide-react";
 import AdminSidebar from "@/components/shared/AdminSidebar";
 import AdminHeader from "@/components/shared/AdminHeader";
 import { cn } from "@/lib/utils";
@@ -77,9 +77,10 @@ export default function DealDetailsPage() {
                   </div>
                   <button 
                     onClick={() => setIsDeleteModalOpen(true)}
-                    className="w-12 h-12 rounded-full border border-red-100 flex items-center justify-center text-red-400 hover:text-red-700 hover:bg-red-50 transition-all font-black shadow-sm"
+                    className="w-12 h-12 rounded-full border border-[#EAECF0] flex items-center justify-center text-[#999] hover:text-[#333] hover:bg-[#F9FAFB] transition-all font-black shadow-sm"
+                    title="Hide"
                   >
-                    <Trash2 size={20} />
+                    <EyeOff size={20} />
                   </button>
                </div>
 
@@ -227,11 +228,12 @@ export default function DealDetailsPage() {
           isOpen={isDeleteModalOpen}
           onClose={() => setIsDeleteModalOpen(false)}
           onConfirm={() => {
-            console.log("Deleting deal:", id);
+            console.log("Hiding deal:", id);
             router.push("/super-admin/deals");
           }}
-          title="Delete Deal"
-          message={`Are you sure you want to delete this deal? This action cannot be undone and will remove all associated logs.`}
+          title="Hide Deal"
+          message={`Are you sure you want to hide this deal?`}
+          confirmText="Hide"
         />
       </div>
     </div>

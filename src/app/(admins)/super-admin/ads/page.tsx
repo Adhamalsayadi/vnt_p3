@@ -12,6 +12,7 @@ import {
   ChevronRight, 
   ChevronLeft,
   ChevronDown, 
+  EyeOff,
   Image as ImageIcon 
 } from "lucide-react";
 import { ConfirmationModal } from "@/components/shared/Modals";
@@ -29,7 +30,7 @@ export default function SuperAdminAds() {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [selectedAd, setSelectedAd] = useState<any>(null);
 
-  const handleDeleteClick = (ad: any) => {
+  const handleHideClick = (ad: any) => {
     setSelectedAd(ad);
     setIsDeleteModalOpen(true);
   };
@@ -99,10 +100,11 @@ export default function SuperAdminAds() {
                                  <Pencil size={18} />
                                </Link>
                                <button 
-                                 onClick={() => handleDeleteClick(ad)}
-                                 className="hover:text-red-600 transition-all"
+                                 onClick={() => handleHideClick(ad)}
+                                 className="hover:text-primary transition-all"
+                                 title="Hide"
                                >
-                                 <Trash2 size={18} />
+                                 <EyeOff size={18} />
                                </button>
                              </div>
                           </td>
@@ -142,11 +144,12 @@ export default function SuperAdminAds() {
           isOpen={isDeleteModalOpen}
           onClose={() => setIsDeleteModalOpen(false)}
           onConfirm={() => {
-            console.log("Deleting ad:", selectedAd?.id);
+            console.log("Hiding ad:", selectedAd?.id);
             setIsDeleteModalOpen(false);
           }}
-          title="Delete Ad"
-          message={`Are you sure you want to delete "${selectedAd?.title}"?`}
+          title="Hide Ad"
+          message={`Are you sure you want to hide "${selectedAd?.title}"?`}
+          confirmText="Hide"
         />
       </div>
     </div>
